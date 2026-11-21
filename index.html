@@ -1,1828 +1,1119 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="id">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>
-      Laporan Progres Riset Skripsi: Edge AI Inspeksi Mutu Beras — UNIDA Gontor
-    </title>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Laporan Progres Riset Skripsi: Edge AI Inspeksi Mutu Beras — UNIDA Gontor</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- KaTeX for math rendering -->
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css"
-    />
-    <script
-      defer
-      src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"
-    ></script>
-    <script
-      defer
-      src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
-      onload="renderMathInElement(document.body)"
-    ></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
     <!-- FontAwesome 6 -->
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-    />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
-      rel="stylesheet"
-    />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     <style>
-      * {
-        box-sizing: border-box;
-      }
-      body {
-        font-family: "Plus Jakarta Sans", sans-serif;
-        background-color: #fafafa;
-        color: #09090b;
-        overflow: hidden;
-        user-select: none;
-      }
-      .font-mono-code {
-        font-family: "Geist Mono", monospace;
-      }
-      .slide {
-        display: none;
-        opacity: 0;
-        transition:
-          opacity 0.22s cubic-bezier(0.16, 1, 0.3, 1),
-          transform 0.22s cubic-bezier(0.16, 1, 0.3, 1);
-        transform: translateY(8px);
-        height: calc(100vh - 128px);
-      }
-      .slide.active {
-        display: flex;
-        opacity: 1;
-        transform: translateY(0);
-      }
-      .mono-card {
-        background: #ffffff;
-        border: 1px solid #e4e4e7;
-        border-radius: 8px;
-        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.03);
-      }
-      .mono-card-subtle {
-        background: #f4f4f5;
-        border: 1px solid #e4e4e7;
-        border-radius: 8px;
-      }
-      .mono-card-dark {
-        background: #09090b;
-        color: #fafafa;
-        border: 1px solid #27272a;
-        border-radius: 8px;
-      }
-      .badge-black {
-        background: #09090b;
-        color: #ffffff;
-        border-radius: 4px;
-        padding: 2px 8px;
-        font-size: 11px;
-        font-weight: 600;
-        font-family: "Geist Mono", monospace;
-      }
-      .badge-green {
-        background: #ecfdf5;
-        color: #047857;
-        border: 1px solid #a7f3d0;
-        border-radius: 4px;
-        padding: 2px 8px;
-        font-size: 11px;
-        font-weight: 600;
-        font-family: "Geist Mono", monospace;
-      }
-      .badge-blue {
-        background: #eff6ff;
-        color: #1d4ed8;
-        border: 1px solid #bfdbfe;
-        border-radius: 4px;
-        padding: 2px 8px;
-        font-size: 11px;
-        font-weight: 600;
-        font-family: "Geist Mono", monospace;
-      }
-      .badge-outline {
-        background: #ffffff;
-        color: #18181b;
-        border: 1px solid #d4d4d8;
-        border-radius: 4px;
-        padding: 2px 8px;
-        font-size: 11px;
-        font-weight: 600;
-        font-family: "Geist Mono", monospace;
-      }
-      /* Custom scrollbar */
-      .slide-scroll::-webkit-scrollbar {
-        width: 5px;
-      }
-      .slide-scroll::-webkit-scrollbar-track {
-        background: transparent;
-      }
-      .slide-scroll::-webkit-scrollbar-thumb {
-        background: #d4d4d8;
-        border-radius: 4px;
-      }
-      @media print {
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+        html, body {
+            height: 100%;
+            height: 100dvh;
+            background-color: #fafafa;
+            color: #09090b;
+            overflow: hidden;
+            user-select: none;
+            touch-action: pan-y;
+        }
         body {
-          overflow: visible !important;
-          background: white !important;
-          color: black !important;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            padding-top: max(env(safe-area-inset-top), 0.5rem);
+            padding-bottom: max(env(safe-area-inset-bottom), 0.5rem);
+            padding-left: max(env(safe-area-inset-left), 0.75rem);
+            padding-right: max(env(safe-area-inset-right), 0.75rem);
+        }
+        .font-mono-code {
+            font-family: 'Geist Mono', monospace;
         }
         .slide {
-          display: flex !important;
-          opacity: 1 !important;
-          transform: none !important;
-          page-break-after: always;
-          height: auto !important;
-          min-height: 100vh;
-          padding: 24px 0;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1), transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            transform: translateY(6px);
+            height: calc(100dvh - 120px);
+            -webkit-overflow-scrolling: touch;
+            overscroll-behavior-y: contain;
         }
-        .no-print {
-          display: none !important;
+        @media (min-width: 768px) {
+            .slide {
+                height: calc(100vh - 126px);
+            }
         }
-      }
+        .slide.active {
+            display: flex;
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .mono-card {
+            background: #ffffff;
+            border: 1px solid #e4e4e7;
+            border-radius: 8px;
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.03);
+        }
+        .mono-card-subtle {
+            background: #f4f4f5;
+            border: 1px solid #e4e4e7;
+            border-radius: 8px;
+        }
+        .mono-card-dark {
+            background: #09090b;
+            color: #fafafa;
+            border: 1px solid #27272a;
+            border-radius: 8px;
+        }
+        .badge-black {
+            background: #09090b;
+            color: #ffffff;
+            border-radius: 4px;
+            padding: 2px 7px;
+            font-size: 10px;
+            font-weight: 600;
+            font-family: 'Geist Mono', monospace;
+        }
+        .badge-green {
+            background: #ecfdf5;
+            color: #047857;
+            border: 1px solid #a7f3d0;
+            border-radius: 4px;
+            padding: 2px 7px;
+            font-size: 10px;
+            font-weight: 600;
+            font-family: 'Geist Mono', monospace;
+        }
+        .badge-blue {
+            background: #eff6ff;
+            color: #1d4ed8;
+            border: 1px solid #bfdbfe;
+            border-radius: 4px;
+            padding: 2px 7px;
+            font-size: 10px;
+            font-weight: 600;
+            font-family: 'Geist Mono', monospace;
+        }
+        .badge-outline {
+            background: #ffffff;
+            color: #18181b;
+            border: 1px solid #d4d4d8;
+            border-radius: 4px;
+            padding: 2px 7px;
+            font-size: 10px;
+            font-weight: 600;
+            font-family: 'Geist Mono', monospace;
+        }
+        /* Custom scrollbar */
+        .slide-scroll::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+        .slide-scroll::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .slide-scroll::-webkit-scrollbar-thumb {
+            background: #d4d4d8;
+            border-radius: 4px;
+        }
+        @media print {
+            body { overflow: visible !important; background: white !important; color: black !important; }
+            .slide { display: flex !important; opacity: 1 !important; transform: none !important; page-break-after: always; height: auto !important; min-height: 100vh; padding: 16px 0; }
+            .no-print { display: none !important; }
+        }
     </style>
-  </head>
-  <body
-    class="h-screen w-screen flex flex-col justify-between p-4 md:p-6 relative bg-[#fafafa] text-zinc-950"
-  >
+</head>
+<body class="flex flex-col justify-between relative bg-[#fafafa] text-zinc-950">
+
+    <!-- Top Mini Progress Bar -->
+    <div class="fixed top-0 left-0 w-full h-1 bg-zinc-200 z-50">
+        <div id="progress-bar" class="h-full bg-zinc-950 transition-all duration-300 w-[11.1%]"></div>
+    </div>
+
     <!-- Top Navigation Header -->
-    <header
-      class="flex items-center justify-between z-20 pb-3 border-b border-zinc-200"
-    >
-      <div class="flex items-center space-x-3">
-        <div
-          class="w-8 h-8 rounded bg-zinc-950 text-white flex items-center justify-center font-bold text-xs tracking-tighter font-mono-code shadow-sm"
-        >
-          TI
+    <header class="flex items-center justify-between z-20 pb-2.5 sm:pb-3 border-b border-zinc-200">
+        <div class="flex items-center space-x-2 sm:space-x-3 overflow-hidden">
+            <div class="w-7 h-7 sm:w-8 sm:h-8 rounded bg-zinc-950 text-white flex-shrink-0 flex items-center justify-center font-bold text-xs tracking-tighter font-mono-code shadow-sm">
+                TI
+            </div>
+            <div class="truncate">
+                <div class="flex items-center space-x-1.5 sm:space-x-2">
+                    <span class="text-xs sm:text-xs font-bold tracking-tight uppercase text-zinc-950 font-mono-code truncate">
+                        <span class="inline sm:hidden">Riset Skripsi Edge AI</span>
+                        <span class="hidden sm:inline">Laporan Progres Riset Skripsi</span>
+                    </span>
+                    <span class="hidden md:inline-block text-[10px] text-zinc-500 border-l border-zinc-300 pl-2">UNIDA Gontor</span>
+                </div>
+                <p class="text-[10px] sm:text-[11px] text-zinc-500 font-mono-code truncate">
+                    Fatih Jawwad &bull; Pembimbing: Ustadz Oddy V. Putra, M.T.
+                </p>
+            </div>
         </div>
-        <div>
-          <div class="flex items-center space-x-2">
-            <span
-              class="text-xs font-bold tracking-tight uppercase text-zinc-950 font-mono-code"
-              >Laporan Progres Riset Skripsi</span
-            >
-          </div>
-          <p class="text-[11px] text-zinc-500 font-mono-code">
-            Fatih Jawwad Al Mumtaz &bull; Pembimbing: Ustadz Oddy Virgantara
-            Putra, M.T.
-          </p>
+        <div class="flex items-center space-x-1.5 sm:space-x-2 flex-shrink-0">
+            <span id="slide-indicator" class="text-[11px] sm:text-xs font-semibold px-2 py-0.5 sm:px-2.5 sm:py-1 bg-white text-zinc-800 rounded border border-zinc-200 font-mono-code shadow-sm">01 / 09</span>
+            <button onclick="toggleFullScreen()" class="p-1 sm:p-1.5 px-2 bg-white hover:bg-zinc-100 active:bg-zinc-200 text-zinc-700 rounded border border-zinc-200 text-xs transition shadow-sm" title="Full Screen (F)">
+                <i class="fa-solid fa-expand"></i>
+            </button>
+            <button onclick="window.print()" class="hidden sm:inline-block p-1 sm:p-1.5 px-2 bg-white hover:bg-zinc-100 active:bg-zinc-200 text-zinc-700 rounded border border-zinc-200 text-xs transition shadow-sm" title="Cetak / Save PDF (P)">
+                <i class="fa-solid fa-file-pdf"></i>
+            </button>
         </div>
-      </div>
-      <div class="flex items-center space-x-2">
-        <span
-          id="slide-indicator"
-          class="text-xs font-semibold px-2.5 py-1 bg-white text-zinc-800 rounded border border-zinc-200 font-mono-code shadow-sm"
-          >01 / 09</span
-        >
-        <button
-          onclick="toggleFullScreen()"
-          class="p-1.5 px-2 bg-white hover:bg-zinc-100 text-zinc-700 rounded border border-zinc-200 text-xs transition shadow-sm"
-          title="Full Screen (F)"
-        >
-          <i class="fa-solid fa-expand"></i>
-        </button>
-        <button
-          onclick="window.print()"
-          class="p-1.5 px-2 bg-white hover:bg-zinc-100 text-zinc-700 rounded border border-zinc-200 text-xs transition shadow-sm"
-          title="Cetak / Save PDF (P)"
-        >
-          <i class="fa-solid fa-file-pdf"></i>
-        </button>
-      </div>
     </header>
 
     <!-- Main Slide Viewport -->
-    <main
-      class="flex-1 flex items-center justify-center relative overflow-hidden py-2"
-    >
-      <!-- SLIDE 1: Title & Overview -->
-      <section
-        class="slide active flex-col justify-center items-center text-center max-w-4xl w-full mx-auto"
-        data-slide="1"
-      >
-        <h1
-          class="text-2xl md:text-3.5xl font-extrabold text-zinc-950 tracking-tight leading-snug mb-4 max-w-3xl"
-        >
-          Optimasi & Kompresi Model
-          <span class="bg-zinc-950 text-white px-2.5 py-0.5 rounded"
-            >Deep Learning</span
-          >
-          untuk Klasifikasi Mutu Bulir Padi Berbasis
-          <span class="border-b-2 border-zinc-950">Edge AI Mobile</span>
-        </h1>
-        <p
-          class="text-zinc-600 text-xs md:text-sm max-w-2xl mb-7 leading-relaxed font-normal"
-        >
-          Transisi dari Arsitektur Berat (SE-ResNet50 98.4 MB) Menuju Edge Model
-          Ringkas (MobileNetV4 INT8 2.6 MB) untuk Inspeksi Standar Mutu Beras
-          (SNI 6128:2020) Secara Offline pada Smartphone.
-        </p>
-        <div
-          class="grid grid-cols-1 md:grid-cols-3 gap-3 w-full max-w-3xl text-left text-xs"
-        >
-          <div class="mono-card p-3.5 border-l-4 border-l-zinc-950">
-            <span
-              class="text-[10px] text-zinc-500 uppercase tracking-wider block mb-1 font-mono-code"
-              >Mahasiswa Peneliti</span
-            >
-            <div class="font-bold text-zinc-950 text-sm">
-              Fatih Jawwad Al Mumtaz
-            </div>
-            <div class="text-[11px] text-zinc-500 font-mono-code">
-              NIM: 432022611076
-            </div>
-          </div>
-          <div class="mono-card p-3.5 border-l-4 border-l-blue-600">
-            <span
-              class="text-[10px] text-zinc-500 uppercase tracking-wider block mb-1 font-mono-code"
-              >Dosen Pembimbing</span
-            >
-            <div class="font-bold text-zinc-950 text-sm">
-              Oddy Virgantara Putra, M.T.
-            </div>
-            <div class="text-[11px] text-zinc-500">
-              Computer Vision & Deep Learning
-            </div>
-          </div>
-          <div class="mono-card p-3.5 border-l-4 border-l-emerald-600">
-            <span
-              class="text-[10px] text-zinc-500 uppercase tracking-wider block mb-1 font-mono-code"
-              >Status Eksperimen</span
-            >
-            <div class="font-bold text-zinc-950 text-sm">5 Model Terlatih</div>
-            <div
-              class="text-[11px] text-emerald-600 font-mono-code font-semibold"
-            >
-              Kompresi INT8 Berhasil (2.6 MB)
-            </div>
-          </div>
-        </div>
-        <div
-          class="mt-6 flex items-center space-x-4 text-[11px] text-zinc-500 font-mono-code"
-        >
-          <span
-            ><i class="fa-brands fa-github mr-1"></i> repo:
-            jaweed3/GrainSet</span
-          >
-          <span>&bull;</span>
-          <span
-            ><i class="fa-solid fa-chart-line mr-1"></i> W&B Live Tracked</span
-          >
-          <span>&bull;</span>
-          <span
-            ><i class="fa-solid fa-microchip mr-1"></i> Device: NVIDIA RTX 4060
-            (WSL2)</span
-          >
-        </div>
-      </section>
+    <main class="flex-1 flex items-center justify-center relative overflow-hidden py-1 sm:py-2">
 
-      <!-- SLIDE 2: Latar Belakang & Urgensi Masalah -->
-      <section
-        class="slide flex-col justify-center max-w-5xl w-full mx-auto overflow-y-auto slide-scroll pr-1"
-        data-slide="2"
-      >
-        <div class="mb-3">
-          <div
-            class="text-[10px] font-bold uppercase tracking-widest text-zinc-500 font-mono-code"
-          >
-            01. Konteks Masalah & Urgensi Riset
-          </div>
-          <h2 class="text-xl md:text-2xl font-extrabold text-zinc-950 mt-0.5">
-            Kesenjangan: Standar Mutu Beras vs Realitas Lapangan
-          </h2>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-12 gap-3.5 items-stretch">
-          <!-- Kolom Kiri: 3 Masalah Lapangan -->
-          <div class="md:col-span-7 space-y-2.5">
-            <!-- Card 1: Manual Inspection -->
-            <a
-              href="https://jurnaliptek.iti.ac.id/index.php/jii/article/view/45"
-              target="_blank"
-              rel="noopener noreferrer"
-              title="Baca lebih lanjut: subjektivitas inspeksi manual"
-              aria-label="Baca lebih lanjut tentang subjektivitas inspeksi manual"
-              class="mono-card p-3 border-l-4 border-l-amber-500 block group transition-all duration-150 cursor-pointer hover:border-l-amber-600 hover:bg-amber-50/40 hover:shadow-sm"
-            >
-              <div class="flex items-center justify-between">
-                <span class="font-bold text-xs text-zinc-950">
-                  1. Subjektivitas &amp; Human Error Inspeksi Manual
-                </span>
-                <div class="flex items-center gap-1.5">
-                  <span class="badge-outline text-[10px]"
-                    >Praktek Konvensional</span
-                  >
-                  <i
-                    class="fa-solid fa-arrow-up-right-from-square text-[9px] text-zinc-400 opacity-0 group-hover:opacity-100 transition-opacity"
-                  ></i>
-                </div>
-              </div>
-              <p class="text-[11px] text-zinc-600 mt-1 leading-relaxed">
-                Di Penggilingan Padi (RMU) dan lumbung desa, penentuan butir
-                patah, berkapur, kuning/rusak, dan hampa masih dinilai manual
-                dengan mata telanjang. Proses lambat, tidak konsisten
-                antar-inspektur, dan merugikan petani saat penentuan harga jual.
-              </p>
-            </a>
-
-            <!-- Card 2: SNI 6128:2020 -->
-            <a
-              href="https://uptdbpsmb.babelprov.go.id/sites/default/files/anggaran/SNI%206128%202020%20_%20Beras.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
-              title="Baca lebih lanjut: dokumen resmi SNI 6128:2020"
-              aria-label="Baca lebih lanjut tentang standar SNI 6128:2020"
-              class="mono-card p-3 border-l-4 border-l-blue-500 block group transition-all duration-150 cursor-pointer hover:border-l-blue-600 hover:bg-blue-50/40 hover:shadow-sm"
-            >
-              <div class="flex items-center justify-between">
-                <span class="font-bold text-xs text-zinc-950">
-                  2. Kebutuhan Standarisasi SNI 6128:2020
-                </span>
-                <div class="flex items-center gap-1.5">
-                  <span class="badge-outline text-[10px]"
-                    >Standar Nasional</span
-                  >
-                  <i
-                    class="fa-solid fa-arrow-up-right-from-square text-[9px] text-zinc-400 opacity-0 group-hover:opacity-100 transition-opacity"
-                  ></i>
-                </div>
-              </div>
-              <p class="text-[11px] text-zinc-600 mt-1 leading-relaxed">
-                BSN mewajibkan parameter ketat untuk klasifikasi Beras Premium
-                vs Medium: batas butir patah (maks 10%–25%), butir
-                mengapur/rusak (maks 0.5%–3%), butir kuning/berjamur (maks
-                0.5%–3%), dan benda asing. Membutuhkan alat hitung presisi
-                tinggi yang seragam.
-              </p>
-            </a>
-
-            <!-- Card 3: Research Gap -->
-            <a
-              href="https://www.nature.com/articles/s41597-023-02660-8"
-              target="_blank"
-              rel="noopener noreferrer"
-              title="Baca lebih lanjut: Fan et al. (Nature Scientific Data, 2023)"
-              aria-label="Baca lebih lanjut tentang riset acuan Fan et al. 2023"
-              class="mono-card p-3 border-l-4 border-l-red-500 block group transition-all duration-150 cursor-pointer hover:border-l-red-600 hover:bg-red-50/40 hover:shadow-sm"
-            >
-              <div class="flex items-center justify-between">
-                <span class="font-bold text-xs text-zinc-950">
-                  3. Keterbatasan Model Heavyweight di Pedesaan
-                </span>
-                <div class="flex items-center gap-1.5">
-                  <span class="badge-outline text-[10px]">Research Gap</span>
-                  <i
-                    class="fa-solid fa-arrow-up-right-from-square text-[9px] text-zinc-400 opacity-0 group-hover:opacity-100 transition-opacity"
-                  ></i>
-                </div>
-              </div>
-              <p class="text-[11px] text-zinc-600 mt-1 leading-relaxed">
-                Riset acuan (Nature 2023) menggunakan
-                <strong>SE-ResNet50 (26.1M parameter, 98.4 MB)</strong> yang
-                butuh server GPU. Ketergantungan API cloud tidak layak di sentra
-                pertanian karena sinyal seluler tidak stabil dan beban biaya
-                sewa server.
-              </p>
-            </a>
-          </div>
-
-          <!-- Kolom Kanan: Solusi Edge AI Kita -->
-          <div class="md:col-span-5 flex flex-col justify-between space-y-2.5">
-            <div class="mono-card-dark p-4 flex-1">
-              <span
-                class="text-[9px] uppercase tracking-wider text-emerald-400 font-mono-code font-bold block mb-1.5"
-                ><i class="fa-solid fa-bolt mr-1"></i> Gagasan & Solusi
-                Skripsi</span
-              >
-              <div class="text-base font-extrabold text-white leading-snug">
-                On-Device Offline Edge AI pada Smartphone
-              </div>
-              <p class="text-[11px] text-zinc-300 mt-2 leading-relaxed">
-                Menghadirkan model klasifikasi butir padi berakurasi setara
-                model server (&gt;95%), namun dipadatkan hingga
-                <strong>&le; 3 MB</strong> via arsitektur ultra-lightweight
-                (MobileNetV4) dan kuantisasi INT8, sehingga dapat berjalan
-                <strong>100% offline</strong> di smartphone petani/petugas tanpa
-                pulsa/internet.
-              </p>
-              <div
-                class="mt-3 pt-3 border-t border-zinc-800 grid grid-cols-3 gap-2 text-center"
-              >
-                <div>
-                  <div class="text-xs font-mono-code font-bold text-white">
-                    0 ms
-                  </div>
-                  <div class="text-[9px] text-zinc-400">Network Latency</div>
-                </div>
-                <div>
-                  <div
-                    class="text-xs font-mono-code font-bold text-emerald-400"
-                  >
-                    2.6 MB
-                  </div>
-                  <div class="text-[9px] text-zinc-400">Ukuran Model</div>
-                </div>
-                <div>
-                  <div class="text-xs font-mono-code font-bold text-white">
-                    95.2%
-                  </div>
-                  <div class="text-[9px] text-zinc-400">Test Accuracy</div>
-                </div>
-              </div>
+        <!-- SLIDE 1: Title & Overview -->
+        <section class="slide active flex-col justify-start md:justify-center items-center text-center max-w-4xl w-full mx-auto overflow-y-auto slide-scroll px-1 pt-2 md:pt-0" data-slide="1">
+            <div class="inline-flex items-center space-x-2 px-2.5 py-0.5 sm:px-3 sm:py-1 rounded border border-zinc-300 bg-white text-zinc-800 text-[10px] sm:text-[11px] font-semibold mb-3 sm:mb-4 font-mono-code shadow-sm">
+                <span class="inline-block w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span>PROGRESS REPORT & MODEL BENCHMARK</span>
             </div>
-
-            <div class="text-[10px] text-zinc-600 mt-1 leading-normal">
-              Dataset &amp; Baseline:
-              <a
-                href="https://www.nature.com/articles/s41597-023-02660-8"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="underline hover:text-zinc-900 transition-colors"
-              >
-                Fan et al. (<em>Nature Scientific Data</em>, 2023)
-              </a>
-              &bull;
-              <a
-                href="https://github.com/hellodfan/GrainSet"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="underline hover:text-zinc-900 transition-colors"
-              >
-                GitHub GrainSet
-              </a>
-              &bull; Standar Mutu: BSN SNI 6128:2020 &bull; Arsitektur Edge:
-              Google MobileNetV4 (Qin et al., 2024).
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- SLIDE 3: Analisis Karakteristik Dataset GrainSet Rice -->
-      <section
-        class="slide flex-col justify-center max-w-5xl w-full mx-auto overflow-y-auto slide-scroll pr-1"
-        data-slide="3"
-      >
-        <div class="mb-3">
-          <div
-            class="text-[10px] font-bold uppercase tracking-widest text-zinc-500 font-mono-code"
-          >
-            02. Eksplorasi Data & Problem Formulasi
-          </div>
-          <h2 class="text-xl md:text-2xl font-extrabold text-zinc-950 mt-0.5">
-            Karakteristik Dataset GrainSet Rice & Tantangan Imbalance
-          </h2>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
-          <!-- Chart Col -->
-          <div class="md:col-span-5 mono-card p-3.5 flex flex-col items-center">
-            <div class="w-full flex justify-between items-center mb-1">
-              <span
-                class="text-[10px] uppercase tracking-wider font-mono-code text-zinc-500 font-bold"
-                >Distribusi 8 Kelas Padi</span
-              >
-              <span class="badge-black text-[9px]">31.000 Citra</span>
-            </div>
-            <div class="relative w-full h-44 my-1">
-              <canvas id="chartRiceDist"></canvas>
-            </div>
-            <div
-              class="w-full grid grid-cols-2 gap-1 text-[10px] font-mono-code pt-2 border-t border-zinc-200"
-            >
-              <div class="flex items-center space-x-1.5">
-                <span class="w-2.5 h-2.5 bg-zinc-900 rounded-sm"></span
-                ><span class="truncate">Normal (66.0%)</span>
-              </div>
-              <div class="flex items-center space-x-1.5">
-                <span class="w-2.5 h-2.5 bg-zinc-400 rounded-sm"></span
-                ><span class="truncate">7 Cacat (~4.8% ea)</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Insight Col -->
-          <div class="md:col-span-7 space-y-2.5">
-            <div class="grid grid-cols-3 gap-2 text-center">
-              <div class="mono-card p-2 bg-white">
-                <span
-                  class="text-[9px] uppercase font-mono-code text-zinc-500 block"
-                  >Total Training</span
-                >
-                <span
-                  class="text-base font-extrabold text-zinc-950 font-mono-code"
-                  >24.767</span
-                >
-                <span class="text-[9px] text-zinc-500 block">citra (80%)</span>
-              </div>
-              <div class="mono-card p-2 bg-white">
-                <span
-                  class="text-[9px] uppercase font-mono-code text-zinc-500 block"
-                  >Total Validasi</span
-                >
-                <span
-                  class="text-base font-extrabold text-zinc-950 font-mono-code"
-                  >3.095</span
-                >
-                <span class="text-[9px] text-zinc-500 block">citra (10%)</span>
-              </div>
-              <div
-                class="mono-card p-2 bg-white border-l-2 border-l-emerald-500"
-              >
-                <span
-                  class="text-[9px] uppercase font-mono-code text-emerald-700 font-bold block"
-                  >Official Test Set</span
-                >
-                <span
-                  class="text-base font-extrabold text-emerald-700 font-mono-code"
-                  >3.100</span
-                >
-                <span class="text-[9px] text-emerald-600 block"
-                  >citra (Evaluasi)</span
-                >
-              </div>
-            </div>
-
-            <div class="mono-card p-3 border-l-4 border-l-amber-500">
-              <div
-                class="text-xs font-bold text-zinc-950 flex items-center justify-between"
-              >
-                <span>Tantangan Ilmiah: Class Imbalance Ekstrem</span>
-                <span class="badge-outline text-[9px]">Rasio 14 : 1</span>
-              </div>
-              <p class="text-[11px] text-zinc-600 mt-1 leading-relaxed">
-                Kelas <strong>Normal</strong> mendominasi dengan 20.450 citra
-                (~66%), sedangkan 7 kelas cacat (Fusarium, Sprouted, Moldy,
-                Pest-attacked, Broken, Unripe, Impurities) masing-masing hanya
-                1.500 citra (~4.8%). Pada test set, kelas minoritas hanya
-                memiliki tepat <strong>150 sampel</strong> per kelas.
-              </p>
-            </div>
-
-            <div class="mono-card-subtle p-3 border border-zinc-200">
-              <div class="text-xs font-bold text-zinc-950 font-mono-code">
-                Implikasi Evaluasi: Mengapa Macro-F1 Wajib Dipakai?
-              </div>
-              <p class="text-[11px] text-zinc-600 mt-1 leading-relaxed">
-                Metrik <em>Accuracy</em> dapat memberikan ilusi keberhasilan
-                palsu karena didominasi kelas mayoritas (Normal). Evaluasi
-                mutlak mengacu pada <strong>Macro-Averaged F1-Score</strong>,
-                yang memberi bobot setara pada setiap kelas cacat tanpa
-                memandang jumlah sampel:
-              </p>
-              <div
-                class="mt-2 text-center font-mono-code text-xs bg-white p-1.5 rounded border border-zinc-200"
-              >
-                $$\text{Macro F1} = \frac{1}{K} \sum_{k=1}^{K} \frac{2 \cdot P_k
-                \cdot R_k}{P_k + R_k}, \quad K = 8$$
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- SLIDE 4: Replikasi Baseline SE-ResNet50 -->
-      <section
-        class="slide flex-col justify-center max-w-5xl w-full mx-auto overflow-y-auto slide-scroll pr-1"
-        data-slide="4"
-      >
-        <div class="mb-3">
-          <div
-            class="text-[10px] font-bold uppercase tracking-widest text-zinc-500 font-mono-code"
-          >
-            03. Verifikasi Baseline Paper Nature
-          </div>
-          <h2 class="text-xl md:text-2xl font-extrabold text-zinc-950 mt-0.5">
-            Replikasi Baseline SE-ResNet50: Sukses Melampaui Paper
-          </h2>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-12 gap-3.5 items-stretch">
-          <!-- Metrik Komparasi Kiri -->
-          <div class="md:col-span-5 space-y-2.5">
-            <div class="mono-card-dark p-3.5">
-              <span
-                class="text-[9px] uppercase tracking-wider text-zinc-400 font-mono-code block mb-1"
-                >Hasil Evaluasi Official Test Set (3.100 Citra)</span
-              >
-              <div class="flex items-baseline space-x-2">
-                <span class="text-2xl font-black text-white font-mono-code"
-                  >96.42%</span
-                >
-                <span
-                  class="text-xs text-emerald-400 font-semibold font-mono-code"
-                  >+0.72% vs Paper</span
-                >
-              </div>
-              <div class="text-[11px] text-zinc-300 mt-1">
-                Akurasi Replikasi Baseline SE-ResNet50
-              </div>
-              <div
-                class="mt-2 pt-2 border-t border-zinc-800 grid grid-cols-2 gap-2 text-center"
-              >
-                <div>
-                  <span class="text-[9px] text-zinc-400 block">Macro F1</span>
-                  <span class="text-sm font-bold text-white font-mono-code"
-                    >94.48%</span
-                  >
-                  <span class="text-[9px] text-emerald-400 block font-mono-code"
-                    >(Paper: 91.90%)</span
-                  >
-                </div>
-                <div>
-                  <span class="text-[9px] text-zinc-400 block"
-                    >Weighted F1</span
-                  >
-                  <span class="text-sm font-bold text-white font-mono-code"
-                    >96.59%</span
-                  >
-                  <span class="text-[9px] text-zinc-400 block font-mono-code"
-                    >(High-confidence)</span
-                  >
-                </div>
-              </div>
-            </div>
-
-            <div class="mono-card p-3 border-l-4 border-l-red-500">
-              <div class="text-xs font-bold text-zinc-950 font-mono-code">
-                Masalah / Bottleneck Arsitektur Baseline:
-              </div>
-              <ul
-                class="text-[11px] text-zinc-600 mt-1.5 space-y-1 list-disc list-inside"
-              >
-                <li>
-                  <strong>26.110.472 Parameter</strong> (Terlalu boros
-                  komputasi).
-                </li>
-                <li>
-                  <strong>98.4 MB Ukuran File ONNX FP32</strong> (Terlalu berat
-                  untuk mobile APK).
-                </li>
-                <li>
-                  Waktu training <strong>~140 detik / epoch</strong> (7x lebih
-                  lambat dibanding model edge).
-                </li>
-                <li>
-                  Kebutuhan RAM & cache besar, menyebabkan thermal throttling di
-                  smartphone.
-                </li>
-              </ul>
-            </div>
-          </div>
-
-          <!-- Per-Class Radar / Table Kanan -->
-          <div
-            class="md:col-span-7 mono-card p-3.5 flex flex-col justify-between"
-          >
-            <div>
-              <div class="flex justify-between items-center mb-2">
-                <span class="text-xs font-bold text-zinc-950 font-mono-code"
-                  >Breakdown Performa 8 Kategori Mutu Beras</span
-                >
-                <span class="badge-black text-[9px]"
-                  >Test Set: 3.100 citra</span
-                >
-              </div>
-              <table class="w-full text-left text-[11px] font-mono-code">
-                <thead>
-                  <tr
-                    class="border-b border-zinc-200 text-zinc-500 text-[10px]"
-                  >
-                    <th class="py-1">Kelas</th>
-                    <th class="py-1">Nama Kategori</th>
-                    <th class="py-1 text-center">Precision</th>
-                    <th class="py-1 text-center">Recall</th>
-                    <th class="py-1 text-right">F1-Score</th>
-                  </tr>
-                </thead>
-                <tbody class="divide-y divide-zinc-100 text-zinc-800">
-                  <tr>
-                    <td class="py-1 text-zinc-400">0</td>
-                    <td>Normal (Utuh Sehat)</td>
-                    <td class="text-center">96.4%</td>
-                    <td class="text-center">99.4%</td>
-                    <td class="text-right font-bold text-zinc-950">97.88%</td>
-                  </tr>
-                  <tr>
-                    <td class="py-1 text-zinc-400">1</td>
-                    <td>Fusarium (Kapur/Busuk)</td>
-                    <td class="text-center">97.4%</td>
-                    <td class="text-center">98.0%</td>
-                    <td class="text-right font-bold text-zinc-950">97.67%</td>
-                  </tr>
-                  <tr>
-                    <td class="py-1 text-zinc-400">2</td>
-                    <td>Sprouted (Berkecambah)</td>
-                    <td class="text-center">88.5%</td>
-                    <td class="text-center">76.0%</td>
-                    <td class="text-right font-bold text-amber-600">81.77%</td>
-                  </tr>
-                  <tr>
-                    <td class="py-1 text-zinc-400">3</td>
-                    <td>Moldy (Berjamur)</td>
-                    <td class="text-center">95.0%</td>
-                    <td class="text-center">90.5%</td>
-                    <td class="text-right font-bold text-zinc-950">92.67%</td>
-                  </tr>
-                  <tr>
-                    <td class="py-1 text-zinc-400">4</td>
-                    <td>Pest Attacked (Hama)</td>
-                    <td class="text-center">94.7%</td>
-                    <td class="text-center">95.7%</td>
-                    <td class="text-right font-bold text-zinc-950">95.18%</td>
-                  </tr>
-                  <tr>
-                    <td class="py-1 text-zinc-400">5</td>
-                    <td>Broken (Patah/Menir)</td>
-                    <td class="text-center">95.4%</td>
-                    <td class="text-center">97.8%</td>
-                    <td class="text-right font-bold text-zinc-950">96.62%</td>
-                  </tr>
-                  <tr>
-                    <td class="py-1 text-zinc-400">6</td>
-                    <td>Unripe (Belum Matang)</td>
-                    <td class="text-center">95.4%</td>
-                    <td class="text-center">94.2%</td>
-                    <td class="text-right font-bold text-zinc-950">94.81%</td>
-                  </tr>
-                  <tr>
-                    <td class="py-1 text-zinc-400">7</td>
-                    <td>Impurities (Kotoran)</td>
-                    <td class="text-center">98.6%</td>
-                    <td class="text-center">100.0%</td>
-                    <td class="text-right font-bold text-emerald-600">
-                      99.26%
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <div
-              class="mt-2 pt-2 border-t border-zinc-200 text-[10px] text-zinc-500"
-            >
-              <span class="font-bold text-zinc-700"
-                ><i class="fa-solid fa-circle-info mr-1"></i> Catatan
-                Ilmiah:</span
-              >
-              Kelas <em>Sprouted</em> (berkecambah awal) memiliki tingkat
-              kesulitan visual tertinggi karena morfologi tunas mikro yang mirip
-              dengan beras normal, memicu F1 81.77%.
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- SLIDE 5: Eksplorasi 4 Model Lightweight Edge AI -->
-      <section
-        class="slide flex-col justify-center max-w-5xl w-full mx-auto overflow-y-auto slide-scroll pr-1"
-        data-slide="5"
-      >
-        <div class="mb-3">
-          <div
-            class="text-[10px] font-bold uppercase tracking-widest text-zinc-500 font-mono-code"
-          >
-            04. Eksplorasi Arsitektur Edge AI
-          </div>
-          <h2 class="text-xl md:text-2xl font-extrabold text-zinc-950 mt-0.5">
-            Benchmark 4 Kandidat Model Ringan vs Baseline
-          </h2>
-        </div>
-
-        <!-- Tabel Perbandingan Komprehensif -->
-        <div class="mono-card p-3 mb-3 overflow-x-auto">
-          <table class="w-full text-left text-[11px] font-mono-code">
-            <thead>
-              <tr class="border-b border-zinc-200 text-zinc-500 text-[10px]">
-                <th class="py-1.5">Model Arsitektur</th>
-                <th class="py-1.5 text-center">Params</th>
-                <th class="py-1.5 text-center">ONNX FP32</th>
-                <th class="py-1.5 text-center">INT8 Quant</th>
-                <th class="py-1.5 text-center">Akurasi</th>
-                <th class="py-1.5 text-center">Macro F1</th>
-                <th class="py-1.5 text-right">Status Evaluasi Mobile</th>
-              </tr>
-            </thead>
-            <tbody class="divide-y divide-zinc-100 text-zinc-800">
-              <tr class="bg-zinc-50/50">
-                <td class="py-2 font-bold text-zinc-950">
-                  SE-ResNet50
-                  <span class="badge-outline text-[9px]">Baseline</span>
-                </td>
-                <td class="text-center">26.11M</td>
-                <td class="text-center font-semibold text-red-600">98.4 MB</td>
-                <td class="text-center text-zinc-400">~25.0 MB</td>
-                <td class="text-center font-bold">96.42%</td>
-                <td class="text-center font-bold">94.48%</td>
-                <td class="text-right text-red-600 font-semibold">
-                  <i class="fa-solid fa-circle-xmark mr-1"></i> Terlalu Berat
-                </td>
-              </tr>
-              <tr class="bg-emerald-50/60 border border-emerald-300">
-                <td class="py-2 font-extrabold text-emerald-950">
-                  MobileNetV4-Small
-                  <span class="badge-green text-[9px]">Google 2024</span>
-                </td>
-                <td class="text-center font-bold text-emerald-800">2.50M</td>
-                <td class="text-center font-bold text-emerald-800">9.6 MB</td>
-                <td
-                  class="text-center font-extrabold text-emerald-700 bg-emerald-100 rounded"
-                >
-                  2.6 MB
-                </td>
-                <td class="text-center font-bold text-emerald-900">95.23%</td>
-                <td class="text-center font-bold text-emerald-900">92.19%</td>
-                <td class="text-right text-emerald-700 font-bold">
-                  <i class="fa-solid fa-circle-check mr-1"></i> Kandidat Utama
-                  (10x Ringan)
-                </td>
-              </tr>
-              <tr>
-                <td class="py-2 font-medium">
-                  EfficientNet-B0
-                  <span class="badge-outline text-[9px]">Tan et al.</span>
-                </td>
-                <td class="text-center">4.02M</td>
-                <td class="text-center">16.2 MB</td>
-                <td class="text-center text-zinc-600">4.2 MB</td>
-                <td class="text-center">95.71%</td>
-                <td class="text-center">93.00%</td>
-                <td class="text-right text-zinc-700 font-semibold">
-                  <i class="fa-solid fa-check mr-1"></i> Sangat Akurat, 16.2 MB
-                </td>
-              </tr>
-              <tr>
-                <td class="py-2 font-medium">
-                  MobileNetV3-Large
-                  <span class="badge-outline text-[9px]">Howard et al.</span>
-                </td>
-                <td class="text-center">4.21M</td>
-                <td class="text-center">17.0 MB</td>
-                <td class="text-center text-zinc-600">4.4 MB</td>
-                <td class="text-center">95.03%</td>
-                <td class="text-center">92.55%</td>
-                <td class="text-right text-zinc-700 font-semibold">
-                  <i class="fa-solid fa-check mr-1"></i> Standar Industri
-                  Android
-                </td>
-              </tr>
-              <tr>
-                <td class="py-2 font-medium">
-                  EdgeNeXt-XSmall
-                  <span class="badge-outline text-[9px]">Transformer</span>
-                </td>
-                <td class="text-center font-semibold">2.15M</td>
-                <td class="text-center">8.4 MB</td>
-                <td class="text-center text-zinc-600">2.2 MB</td>
-                <td class="text-center text-amber-600">88.00%</td>
-                <td class="text-center text-amber-600">78.91%</td>
-                <td class="text-right text-amber-600">
-                  <i class="fa-solid fa-triangle-exclamation mr-1"></i> Perlu
-                  Pra-pelatihan Besar
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <!-- Bar Chart Perbandingan Parameter vs Akurasi -->
-        <div class="grid grid-cols-1 md:grid-cols-12 gap-3 items-center">
-          <div class="md:col-span-7 mono-card p-3">
-            <span
-              class="text-[10px] uppercase tracking-wider font-mono-code text-zinc-500 font-bold block mb-1"
-              >Visualisasi: Parameter (M) vs Akurasi Test (%)</span
-            >
-            <div class="h-36">
-              <canvas id="chartModelComparison"></canvas>
-            </div>
-          </div>
-          <div class="md:col-span-5 space-y-2">
-            <div
-              class="mono-card p-2.5 border-l-4 border-l-emerald-600 bg-white"
-            >
-              <div class="text-[11px] font-bold text-zinc-950 font-mono-code">
-                Temuan Kunci Eksperimen:
-              </div>
-              <p class="text-[10px] text-zinc-600 mt-1 leading-relaxed">
-                <strong>MobileNetV4-Small</strong> hanya mengalami penurunan
-                akurasi sebesar <strong>1.19%</strong> dibanding baseline 26M,
-                namun menghemat parameter hingga <strong>90.4%</strong> dan
-                memangkas waktu latih dari 140s menjadi 19.8s per epoch (7x
-                lebih cepat).
-              </p>
-            </div>
-            <div class="mono-card p-2.5 border-l-4 border-l-zinc-950 bg-white">
-              <div class="text-[11px] font-bold text-zinc-950 font-mono-code">
-                Rekomendasi Skripsi:
-              </div>
-              <p class="text-[10px] text-zinc-600 mt-0.5 leading-relaxed">
-                Menjadikan <strong>MobileNetV4-Small</strong> sebagai tulang
-                punggung (backbone) sistem inspeksi mobile edge karena profil
-                latensinya yang universal di CPU/NPU smartphone.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- SLIDE 6: Kompresi Model & Kuantisasi INT8 -->
-      <section
-        class="slide flex-col justify-center max-w-5xl w-full mx-auto overflow-y-auto slide-scroll pr-1"
-        data-slide="6"
-      >
-        <div class="mb-3">
-          <div
-            class="text-[10px] font-bold uppercase tracking-widest text-zinc-500 font-mono-code"
-          >
-            05. Teknik Kompresi & Kuantisasi
-          </div>
-          <h2 class="text-xl md:text-2xl font-extrabold text-zinc-950 mt-0.5">
-            Post-Training Quantization (PTQ) INT8: Reduksi Ukuran 97.3%
-          </h2>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-12 gap-3.5 items-stretch">
-          <!-- Kolom Kiri: Reduksi Visual -->
-          <div class="md:col-span-6 space-y-2.5">
-            <div class="mono-card p-3.5">
-              <span
-                class="text-[10px] uppercase tracking-wider font-mono-code text-zinc-500 font-bold block mb-1"
-                >Perjalanan Kompresi Model (Ukuran File Disk)</span
-              >
-              <div class="h-40 my-1">
-                <canvas id="chartQuantSize"></canvas>
-              </div>
-              <div
-                class="text-[10px] text-zinc-500 text-center font-mono-code mt-1"
-              >
-                Reduksi total dari Baseline (98.4 MB) ke MobileNetV4 INT8 (2.6
-                MB) =
-                <strong class="text-emerald-600">97.3% Penghematan</strong>
-              </div>
-            </div>
-
-            <div class="mono-card p-3 border-l-4 border-l-blue-600">
-              <div class="text-xs font-bold text-zinc-950 font-mono-code">
-                Formulasi Matematis Kuantisasi Integer Asimetris:
-              </div>
-              <p class="text-[11px] text-zinc-600 mt-1 leading-relaxed">
-                Transformasi bobot kontinu 32-bit ke integer 8-bit diskrit
-                menggunakan faktor skala $S$ dan titik nol $Z$:
-              </p>
-              <div
-                class="mt-1.5 text-center font-mono-code text-xs bg-zinc-50 p-2 rounded border border-zinc-200"
-              >
-                $$q = \text{round}\left( \frac{r}{S} \right) + Z, \quad S =
-                \frac{r_{\max} - r_{\min}}{q_{\max} - q_{\min}}$$
-              </div>
-            </div>
-          </div>
-
-          <!-- Kolom Kanan: Dampak Akurasi & Efisiensi -->
-          <div class="md:col-span-6 space-y-2.5">
-            <div class="mono-card-dark p-3.5">
-              <span
-                class="text-[9px] uppercase tracking-wider text-emerald-400 font-mono-code font-bold block mb-1"
-                >Dampak Kuantisasi pada Kualitas Prediksi</span
-              >
-              <div class="grid grid-cols-2 gap-3 mt-2">
-                <div
-                  class="p-2.5 bg-zinc-900 rounded border border-zinc-800 text-center"
-                >
-                  <span class="text-[10px] text-zinc-400 block font-mono-code"
-                    >FP32 ONNX Model</span
-                  >
-                  <span class="text-lg font-bold text-white font-mono-code"
-                    >9.6 MB</span
-                  >
-                  <span
-                    class="text-[10px] text-zinc-300 block font-mono-code mt-1"
-                    >Akurasi: 95.23%</span
-                  >
-                  <span class="text-[10px] text-zinc-400 block font-mono-code"
-                    >Macro F1: 92.19%</span
-                  >
-                </div>
-                <div
-                  class="p-2.5 bg-zinc-900 rounded border border-emerald-800 text-center"
-                >
-                  <span
-                    class="text-[10px] text-emerald-400 block font-mono-code"
-                    >INT8 ONNX Model</span
-                  >
-                  <span
-                    class="text-lg font-bold text-emerald-400 font-mono-code"
-                    >2.6 MB</span
-                  >
-                  <span
-                    class="text-[10px] text-emerald-300 block font-mono-code mt-1"
-                    >Akurasi: ~95.1%</span
-                  >
-                  <span
-                    class="text-[10px] text-emerald-400 block font-mono-code"
-                    >&Delta; F1 &lt; 0.2%</span
-                  >
-                </div>
-              </div>
-              <div
-                class="mt-2.5 pt-2 border-t border-zinc-800 text-[10px] text-zinc-300"
-              >
-                <i class="fa-solid fa-shield-halved text-emerald-400 mr-1"></i>
-                Penurunan akurasi mendekati nol (&lt; 0.2%), namun memori
-                terpangkas 73% dari FP32 asli.
-              </div>
-            </div>
-
-            <div class="mono-card p-3">
-              <div class="text-xs font-bold text-zinc-950 font-mono-code">
-                Mengapa Ukuran 2.6 MB Menjadi Game Changer?
-              </div>
-              <ul
-                class="text-[11px] text-zinc-600 mt-2 space-y-1.5 list-disc list-inside"
-              >
-                <li>
-                  <strong>Zero Download Overhead</strong>: Dapat langsung
-                  di-*bundle* ke dalam asset APK (tanpa perlu unduhan model
-                  eksternal saat instalasi pertama).
-                </li>
-                <li>
-                  <strong>RAM Footprint Sangat Rendah</strong>: Mengkonsumsi
-                  &lt; 25 MB RAM saat inferensi berjalan, aman dari risiko
-                  *Out-of-Memory (OOM)* pada smartphone Android Rp 1 jutaan.
-                </li>
-                <li>
-                  <strong>Operasi Integer Cepat</strong>: Memanfaatkan instruksi
-                  SIMD NEON / INT8 pada ARM Cortex-A CPU.
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- SLIDE 7: Desain Arsitektur Mobile Edge App -->
-      <section
-        class="slide flex-col justify-center max-w-5xl w-full mx-auto overflow-y-auto slide-scroll pr-1"
-        data-slide="7"
-      >
-        <div class="mb-3">
-          <div
-            class="text-[10px] font-bold uppercase tracking-widest text-zinc-500 font-mono-code"
-          >
-            06. Rencana Implementasi Sistem Mobile
-          </div>
-          <h2 class="text-xl md:text-2xl font-extrabold text-zinc-950 mt-0.5">
-            Arsitektur Aplikasi Mobile: Kamera ke Rekapitulasi SNI
-          </h2>
-        </div>
-
-        <!-- Pipeline Flow Diagram -->
-        <div class="mono-card p-4 mb-3">
-          <div
-            class="text-[10px] uppercase font-mono-code text-zinc-500 font-bold mb-3 flex items-center justify-between"
-          >
-            <span
-              >Pipeline Inferensi On-Device (100% Offline Tanpa Sinyal)</span
-            >
-            <span class="badge-black text-[9px]"
-              >Latency Target &lt; 40 ms</span
-            >
-          </div>
-          <div
-            class="grid grid-cols-1 md:grid-cols-5 gap-2 text-center text-xs"
-          >
-            <div
-              class="p-2.5 bg-zinc-50 rounded border border-zinc-200 flex flex-col justify-between"
-            >
-              <div class="text-zinc-500 font-mono-code text-[10px]">
-                TAHAP 1
-              </div>
-              <div class="my-1.5 text-zinc-950 font-bold">
-                <i
-                  class="fa-solid fa-camera mb-1 block text-base text-zinc-700"
-                ></i>
-                Kamera Smartphone
-              </div>
-              <div class="text-[10px] text-zinc-500">
-                Capture / Live Preview sampel beras di cawan
-              </div>
-            </div>
-            <div
-              class="p-2.5 bg-zinc-50 rounded border border-zinc-200 flex flex-col justify-between"
-            >
-              <div class="text-zinc-500 font-mono-code text-[10px]">
-                TAHAP 2
-              </div>
-              <div class="my-1.5 text-zinc-950 font-bold">
-                <i
-                  class="fa-solid fa-crop-simple mb-1 block text-base text-blue-600"
-                ></i>
-                Preprocessing
-              </div>
-              <div class="text-[10px] text-zinc-500">
-                Auto crop & resize ke $224 \times 224 \times 3$, ImageNet norm
-              </div>
-            </div>
-            <div
-              class="p-2.5 bg-zinc-900 text-white rounded border border-zinc-950 flex flex-col justify-between"
-            >
-              <div class="text-emerald-400 font-mono-code text-[10px]">
-                TAHAP 3 (CORE)
-              </div>
-              <div class="my-1.5 font-bold">
-                <i
-                  class="fa-solid fa-microchip mb-1 block text-base text-emerald-400"
-                ></i>
-                ONNX Runtime Mobile
-              </div>
-              <div class="text-[10px] text-zinc-300">
-                Eksekusi MobileNetV4 INT8 via CPU / NNAPI
-              </div>
-            </div>
-            <div
-              class="p-2.5 bg-zinc-50 rounded border border-zinc-200 flex flex-col justify-between"
-            >
-              <div class="text-zinc-500 font-mono-code text-[10px]">
-                TAHAP 4
-              </div>
-              <div class="my-1.5 text-zinc-950 font-bold">
-                <i
-                  class="fa-solid fa-layer-group mb-1 block text-base text-purple-600"
-                ></i>
-                Klasifikasi 8 Kelas
-              </div>
-              <div class="text-[10px] text-zinc-500">
-                Probabilitas Softmax kelas Normal vs 7 Cacat
-              </div>
-            </div>
-            <div
-              class="p-2.5 bg-zinc-50 rounded border border-zinc-200 flex flex-col justify-between"
-            >
-              <div class="text-zinc-500 font-mono-code text-[10px]">
-                TAHAP 5
-              </div>
-              <div class="my-1.5 text-zinc-950 font-bold">
-                <i
-                  class="fa-solid fa-file-invoice mb-1 block text-base text-emerald-600"
-                ></i>
-                Rapor Mutu SNI
-              </div>
-              <div class="text-[10px] text-zinc-500">
-                Rekapitulasi: Mutu 1 / Mutu 2 / Substandar
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Detail Fitur Aplikasi -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-          <div class="mono-card p-3">
-            <div class="flex items-center space-x-2 mb-1.5">
-              <div
-                class="w-6 h-6 rounded bg-zinc-100 flex items-center justify-center text-xs text-zinc-900"
-              >
-                <i class="fa-solid fa-calculator"></i>
-              </div>
-              <div class="text-xs font-bold text-zinc-950">
-                Agregasi Proporsi Cacat
-              </div>
-            </div>
-            <p class="text-[11px] text-zinc-600 leading-relaxed">
-              Aplikasi menghitung rasio butir patah dan butir cacat dari
-              sekumpulan sampel bulir, lalu membandingkannya langsung dengan
-              batas ambang SNI 6128:2020.
+            <h1 class="text-xl sm:text-2xl md:text-3.5xl font-extrabold text-zinc-950 tracking-tight leading-snug mb-3 sm:mb-4 max-w-3xl">
+                Optimasi & Kompresi Model <span class="bg-zinc-950 text-white px-2 py-0.5 rounded">Deep Learning</span> untuk Klasifikasi Mutu Bulir Padi Berbasis <span class="border-b-2 border-zinc-950">Edge AI Mobile</span>
+            </h1>
+            <p class="text-zinc-600 text-xs sm:text-sm max-w-2xl mb-4 sm:mb-6 leading-relaxed font-normal">
+                Transisi dari Arsitektur Berat (SE-ResNet50 98.4 MB) Menuju Edge Model Ringkas (MobileNetV4 INT8 2.6 MB) untuk Inspeksi Standar Mutu Beras (SNI 6128:2020) Secara Offline pada Smartphone.
             </p>
-          </div>
-          <div class="mono-card p-3">
-            <div class="flex items-center space-x-2 mb-1.5">
-              <div
-                class="w-6 h-6 rounded bg-zinc-100 flex items-center justify-center text-xs text-zinc-900"
-              >
-                <i class="fa-solid fa-wifi-slash"></i>
-              </div>
-              <div class="text-xs font-bold text-zinc-950">
-                Zero Server Cost & Privacy
-              </div>
-            </div>
-            <p class="text-[11px] text-zinc-600 leading-relaxed">
-              Citra diproses lokal di RAM ponsel tanpa pernah dikirim ke
-              internet. Bebas biaya langganan cloud server, cocok untuk
-              operasional mandiri di penggilingan desa.
-            </p>
-          </div>
-          <div class="mono-card p-3">
-            <div class="flex items-center space-x-2 mb-1.5">
-              <div
-                class="w-6 h-6 rounded bg-zinc-100 flex items-center justify-center text-xs text-zinc-900"
-              >
-                <i class="fa-brands fa-android"></i>
-              </div>
-              <div class="text-xs font-bold text-zinc-950">
-                Cross-Platform Flutter / Kotlin
-              </div>
-            </div>
-            <p class="text-[11px] text-zinc-600 leading-relaxed">
-              Pengembangan antarmuka menggunakan Flutter dengan binding
-              <span class="font-mono-code text-[10px] bg-zinc-100 px-1 rounded"
-                >onnxruntime</span
-              >
-              C-API untuk kompatibilitas penuh di Android 8.0 ke atas.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <!-- SLIDE 8: Landasan Teori & Referensi Akademik Terverifikasi -->
-      <section
-        class="slide flex-col justify-center max-w-5xl w-full mx-auto overflow-y-auto slide-scroll pr-1"
-        data-slide="8"
-      >
-        <div class="mb-3">
-          <div
-            class="text-[10px] font-bold uppercase tracking-widest text-zinc-500 font-mono-code"
-          >
-            07. Rujukan Ilmiah & Kajian Pustaka
-          </div>
-          <h2 class="text-xl md:text-2xl font-extrabold text-zinc-950 mt-0.5">
-            Daftar Referensi Resmi (Non-Fiktif) & Sintesis Temuan
-          </h2>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-          <!-- Ref 1 -->
-          <div class="mono-card p-3 border-l-4 border-l-zinc-900">
-            <div class="flex justify-between items-start">
-              <span class="badge-black text-[9px]"
-                >Dataset & Baseline Primer</span
-              >
-              <span class="text-[10px] text-zinc-500 font-mono-code"
-                >Nature 2023</span
-              >
-            </div>
-            <div class="text-xs font-bold text-zinc-950 mt-1">
-              Fan, L., Ding, Y., Fan, D., Wu, Y., Chu, H., Pagnucco, M., & Song,
-              Y. (2023)
-            </div>
-            <div class="text-[10px] text-zinc-500 italic">
-              Scientific Data (Nature), 10:778. DOI: 10.1038/s41597-023-02660-8
-            </div>
-            <p class="text-[11px] text-zinc-600 mt-1.5 leading-relaxed">
-              <strong>Sintesis:</strong> Memperkenalkan database GrainSet (350K+
-              citra). Khusus padi: 31.000 citra, 8 kelas mutu. Baseline
-              SE-ResNet50 menghasilkan akurasi 95.70% & F1 91.90%, namun dengan
-              beban komputasi 26.1M parameter (tidak aplikatif di edge).
-            </p>
-          </div>
-
-          <!-- Ref 2 -->
-          <div class="mono-card p-3 border-l-4 border-l-blue-600">
-            <div class="flex justify-between items-start">
-              <span class="badge-blue text-[9px]">Standar Regulasi Mutu</span>
-              <span class="text-[10px] text-zinc-500 font-mono-code"
-                >BSN 2020</span
-              >
-            </div>
-            <div class="text-xs font-bold text-zinc-950 mt-1">
-              Badan Standardisasi Nasional (BSN) (2020)
-            </div>
-            <div class="text-[10px] text-zinc-500 italic">
-              SNI 6128:2020 — Beras Giling: Syarat Mutu dan Metode Pengujian
-            </div>
-            <p class="text-[11px] text-zinc-600 mt-1.5 leading-relaxed">
-              <strong>Sintesis:</strong> Menetapkan ambang toleransi butir
-              patah, menir, butir mengapur/rusak, dan butir kuning/berjamur
-              untuk klasifikasi Mutu 1 (Premium), Mutu 2 (Medium), dan Mutu 3 di
-              Indonesia.
-            </p>
-          </div>
-
-          <!-- Ref 3 -->
-          <div class="mono-card p-3 border-l-4 border-l-emerald-600">
-            <div class="flex justify-between items-start">
-              <span class="badge-green text-[9px]"
-                >Arsitektur Edge AI Universal</span
-              >
-              <span class="text-[10px] text-zinc-500 font-mono-code"
-                >Google 2024</span
-              >
-            </div>
-            <div class="text-xs font-bold text-zinc-950 mt-1">
-              Qin, D., Leichner, C., Delakis, M., et al. (Google) (2024)
-            </div>
-            <div class="text-[10px] text-zinc-500 italic">
-              MobileNetV4: Universal Models for the Mobile Ecosystem.
-              arXiv:2404.10518
-            </div>
-            <p class="text-[11px] text-zinc-600 mt-1.5 leading-relaxed">
-              <strong>Sintesis:</strong> Memperkenalkan Universal Inverted
-              Bottleneck (UIB) dan Mobile MQA. Terbukti mencapai efisiensi
-              Pareto-optimal di mobile CPU/GPU, terbukti mempertahankan akurasi
-              95.23% pada dataset beras kita.
-            </p>
-          </div>
-
-          <!-- Ref 4 -->
-          <div class="mono-card p-3 border-l-4 border-l-purple-600">
-            <div class="flex justify-between items-start">
-              <span class="badge-outline text-[9px]"
-                >Kuantisasi Integer Edge</span
-              >
-              <span class="text-[10px] text-zinc-500 font-mono-code"
-                >IEEE CVPR 2018</span
-              >
-            </div>
-            <div class="text-xs font-bold text-zinc-950 mt-1">
-              Jacob, B., Kligys, S., Chen, B., Howard, A., et al. (2018)
-            </div>
-            <div class="text-[10px] text-zinc-500 italic">
-              Quantization and Training of Neural Networks for Efficient
-              Integer-Arithmetic Inference. CVPR
-            </div>
-            <p class="text-[11px] text-zinc-600 mt-1.5 leading-relaxed">
-              <strong>Sintesis:</strong> Landasan teoritis konversi FP32 ke INT8
-              integer-only. Memangkas konsumsi bandwidth memori dan daya baterai
-              perangkat seluler hingga 75% tanpa degradasi signifikan pada
-              representasi fitur.
-            </p>
-          </div>
-        </div>
-        <div class="mt-2 text-right">
-          <span class="text-[10px] text-zinc-500 font-mono-code"
-            >Referensi pendukung lain: Chen et al. (Nature Sci Rep 2024), Tan &
-            Le (ICML 2019), Howard et al. (ICCV 2019).</span
-          >
-        </div>
-      </section>
-
-      <!-- SLIDE 9: Rangkuman Kemajuan & Poin Diskusi Bimbingan -->
-      <section
-        class="slide flex-col justify-center max-w-5xl w-full mx-auto overflow-y-auto slide-scroll pr-1"
-        data-slide="9"
-      >
-        <div class="mb-3">
-          <div
-            class="text-[10px] font-bold uppercase tracking-widest text-zinc-500 font-mono-code"
-          >
-            08. Status Kemajuan & Tindak Lanjut
-          </div>
-          <h2 class="text-xl md:text-2xl font-extrabold text-zinc-950 mt-0.5">
-            Ringkasan Capaian & Agenda Diskusi Bimbingan
-          </h2>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-12 gap-3.5 items-stretch">
-          <!-- Checklist Capaian Kiri -->
-          <div class="md:col-span-6 space-y-2">
-            <div class="mono-card p-3">
-              <div
-                class="text-xs font-bold text-zinc-950 font-mono-code mb-2 flex items-center justify-between"
-              >
-                <span>Checklist Capaian Praktis</span>
-              </div>
-              <ul class="text-[11px] text-zinc-700 space-y-2">
-                <li class="flex items-center space-x-2">
-                  <i
-                    class="fa-solid fa-circle-check text-emerald-600 text-xs"
-                  ></i>
-                  <span
-                    >Lingkungan training remote (`pc-putih` RTX 4060)
-                    terkonfigurasi.</span
-                  >
-                </li>
-                <li class="flex items-center space-x-2">
-                  <i
-                    class="fa-solid fa-circle-check text-emerald-600 text-xs"
-                  ></i>
-                  <span
-                    >Dataset GrainSet Rice (31.000 citra, 8 kelas)
-                    tervalidasi.</span
-                  >
-                </li>
-                <li class="flex items-center space-x-2">
-                  <i
-                    class="fa-solid fa-circle-check text-emerald-600 text-xs"
-                  ></i>
-                  <span
-                    >Baseline SE-ResNet50 dilatih: Akurasi 96.42% (lampaui paper
-                    95.70%).</span
-                  >
-                </li>
-                <li class="flex items-center space-x-2">
-                  <i
-                    class="fa-solid fa-circle-check text-emerald-600 text-xs"
-                  ></i>
-                  <span
-                    >4 Model Lightweight Edge AI selesai dilatih &
-                    dievaluasi.</span
-                  >
-                </li>
-                <li class="flex items-center space-x-2">
-                  <i
-                    class="fa-solid fa-circle-check text-emerald-600 text-xs"
-                  ></i>
-                  <span
-                    >Kuantisasi INT8 MobileNetV4 sukses mereduksi model ke 2.6
-                    MB.</span
-                  >
-                </li>
-                <li class="flex items-center space-x-2">
-                  <i
-                    class="fa-solid fa-circle-check text-emerald-600 text-xs"
-                  ></i>
-                  <span
-                    >Pelacakan eksperimen live via Weights & Biases (W&B)
-                    tersinkron.</span
-                  >
-                </li>
-              </ul>
-            </div>
-
-            <div class="mono-card p-2.5 bg-zinc-50 border-zinc-200">
-              <div class="text-[11px] font-bold text-zinc-800 font-mono-code">
-                <i class="fa-solid fa-link mr-1"></i> Akses Kode & Artifact:
-              </div>
-              <div
-                class="text-[10px] text-zinc-600 font-mono-code mt-1 space-y-0.5"
-              >
-                <div>
-                  GitHub:
-                  <a
-                    href="https://github.com/jaweed3/GrainSet"
-                    target="_blank"
-                    class="underline text-blue-600"
-                    >github.com/jaweed3/GrainSet</a
-                  >
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-3 w-full max-w-3xl text-left text-xs mb-3 sm:mb-4">
+                <div class="mono-card p-3 border-l-4 border-l-zinc-950">
+                    <span class="text-[9px] sm:text-[10px] text-zinc-500 uppercase tracking-wider block mb-0.5 font-mono-code">Mahasiswa Peneliti</span>
+                    <div class="font-bold text-zinc-950 text-xs sm:text-sm">Fatih Jawwad Al Mumtaz</div>
+                    <div class="text-[10px] sm:text-[11px] text-zinc-500 font-mono-code">NIM: 432022611076</div>
                 </div>
-                <div>
-                  Weights & Biases:
-                  <span class="text-zinc-800">skripsi-rice-inspection</span>
+                <div class="mono-card p-3 border-l-4 border-l-blue-600">
+                    <span class="text-[9px] sm:text-[10px] text-zinc-500 uppercase tracking-wider block mb-0.5 font-mono-code">Dosen Pembimbing</span>
+                    <div class="font-bold text-zinc-950 text-xs sm:text-sm">Oddy Virgantara Putra, M.T.</div>
+                    <div class="text-[10px] sm:text-[11px] text-zinc-500">Computer Vision & Deep Learning</div>
                 </div>
-              </div>
+                <div class="mono-card p-3 border-l-4 border-l-emerald-600">
+                    <span class="text-[9px] sm:text-[10px] text-zinc-500 uppercase tracking-wider block mb-0.5 font-mono-code">Status Eksperimen</span>
+                    <div class="font-bold text-zinc-950 text-xs sm:text-sm">5 Model Terlatih (100%)</div>
+                    <div class="text-[10px] sm:text-[11px] text-emerald-600 font-mono-code font-semibold">Kompresi INT8 Berhasil (2.6 MB)</div>
+                </div>
             </div>
-          </div>
+            <div class="flex flex-wrap items-center justify-center gap-2 sm:gap-3 text-[10px] sm:text-[11px] text-zinc-500 font-mono-code">
+                <a href="https://github.com/jaweed3/GrainSet" target="_blank" rel="noopener noreferrer" class="hover:text-zinc-900 underline">
+                    <i class="fa-brands fa-github mr-1"></i> jaweed3/GrainSet
+                </a>
+                <span>&bull;</span>
+                <a href="https://forge.coreweave.com/wandb/wedjaw22-jaweed3/skripsi-rice-inspection" target="_blank" rel="noopener noreferrer" class="hover:text-zinc-900 underline">
+                    <i class="fa-solid fa-chart-line mr-1"></i> W&B Live Tracked
+                </a>
+                <span>&bull;</span>
+                <span><i class="fa-solid fa-microchip mr-1"></i> RTX 4060 (WSL2)</span>
+            </div>
+        </section>
 
-          <!-- Poin Diskusi dengan Pembimbing Kanan -->
-          <div class="md:col-span-6 space-y-2">
-            <div class="mono-card-dark p-3.5">
-              <div
-                class="text-xs font-bold text-white font-mono-code mb-2 flex items-center justify-between"
-              >
-                <span
-                  ><i class="fa-solid fa-comments text-amber-400 mr-1.5"></i>
-                  Poin Diskusi / Arahan Ustadz Oddy</span
-                >
-                <span
-                  class="badge-outline text-[9px] text-zinc-300 border-zinc-700 bg-zinc-800"
-                  >Bimbingan</span
-                >
-              </div>
-              <div class="space-y-2 text-[11px] text-zinc-300">
-                <div class="p-2 bg-zinc-900 rounded border border-zinc-800">
-                  <strong class="text-white block mb-0.5"
-                    >1. Penetapan Arsitektur Utama</strong
-                  >
-                  Apakah Ustadz menyetujui fokus implementasi mobile diarahkan
-                  sepenuhnya pada arsitektur
-                  <strong>MobileNetV4-Small</strong> (2.6 MB INT8) atau perlu
-                  menyertakan <strong>EfficientNet-B0</strong> sebagai komparasi
-                  sekunder?
-                </div>
-                <div class="p-2 bg-zinc-900 rounded border border-zinc-800">
-                  <strong class="text-white block mb-0.5"
-                    >2. Metrik Standar Penilaian Mutu (SNI)</strong
-                  >
-                  Penggabungan hasil klasifikasi per-butir menjadi rapor mutu
-                  beras SNI 6128:2020 (persentase butir patah & cacat dari N
-                  butir sampel per piringan foto).
-                </div>
-                <div class="p-2 bg-zinc-900 rounded border border-zinc-800">
-                  <strong class="text-white block mb-0.5"
-                    >3. Rencana Penulisan Proposal</strong
-                  >
-                  Mulai penyusunan naskah Bab 1 (Latar Belakang, Batasan
-                  Masalah, Tujuan) dan Bab 2 (Tinjauan Pustaka) pada template
-                  LaTeX UNIDA.
-                </div>
-              </div>
+        <!-- SLIDE 2: Latar Belakang & Urgensi Masalah -->
+        <section class="slide flex-col justify-start md:justify-center max-w-5xl w-full mx-auto overflow-y-auto slide-scroll px-1 pt-1 md:pt-0" data-slide="2">
+            <div class="mb-2 sm:mb-3">
+                <div class="text-[9px] sm:text-[10px] font-bold uppercase tracking-widest text-zinc-500 font-mono-code">01. Konteks Masalah & Urgensi Riset</div>
+                <h2 class="text-base sm:text-xl md:text-2xl font-extrabold text-zinc-950 mt-0.5">Kesenjangan: Standar Mutu Beras vs Realitas Lapangan</h2>
             </div>
-          </div>
-        </div>
-      </section>
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-2.5 sm:gap-3.5 items-stretch pb-2">
+                <!-- Kolom Kiri: 3 Masalah Lapangan -->
+                <div class="md:col-span-7 space-y-2">
+                    <a href="https://jurnaliptek.iti.ac.id/index.php/jii/article/view/45" target="_blank" rel="noopener noreferrer" class="mono-card p-2.5 sm:p-3 border-l-4 border-l-amber-500 block hover:bg-amber-50/40 transition">
+                        <div class="flex items-center justify-between">
+                            <span class="font-bold text-xs text-zinc-950">1. Subjektivitas & Human Error Inspeksi Manual</span>
+                            <span class="badge-outline text-[9px]">Konvensional <i class="fa-solid fa-arrow-up-right-from-square text-[8px] ml-0.5"></i></span>
+                        </div>
+                        <p class="text-[10px] sm:text-[11px] text-zinc-600 mt-1 leading-relaxed">
+                            Di Rice Milling Unit (RMU) dan lumbung desa, butir patah, berkapur, kuning/rusak dinilai manual dengan mata telanjang. Proses lambat, tidak konsisten antar-inspektur, dan merugikan petani saat penentuan harga jual.
+                        </p>
+                    </a>
+
+                    <a href="https://uptdbpsmb.babelprov.go.id/sites/default/files/anggaran/SNI%206128%202020%20_%20Beras.pdf" target="_blank" rel="noopener noreferrer" class="mono-card p-2.5 sm:p-3 border-l-4 border-l-blue-500 block hover:bg-blue-50/40 transition">
+                        <div class="flex items-center justify-between">
+                            <span class="font-bold text-xs text-zinc-950">2. Kebutuhan Standarisasi SNI 6128:2020</span>
+                            <span class="badge-outline text-[9px]">Standar SNI <i class="fa-solid fa-arrow-up-right-from-square text-[8px] ml-0.5"></i></span>
+                        </div>
+                        <p class="text-[10px] sm:text-[11px] text-zinc-600 mt-1 leading-relaxed">
+                            BSN mewajibkan batas butir patah (maks 10%-25%), butir mengapur/rusak (maks 0.5%-3%), butir kuning/berjamur (maks 0.5%-3%), dan benda asing. Membutuhkan alat hitung presisi tinggi yang seragam.
+                        </p>
+                    </a>
+
+                    <a href="https://www.nature.com/articles/s41597-023-02660-8" target="_blank" rel="noopener noreferrer" class="mono-card p-2.5 sm:p-3 border-l-4 border-l-red-500 block hover:bg-red-50/40 transition">
+                        <div class="flex items-center justify-between">
+                            <span class="font-bold text-xs text-zinc-950">3. Keterbatasan Model Heavyweight di Pedesaan</span>
+                            <span class="badge-outline text-[9px]">Research Gap <i class="fa-solid fa-arrow-up-right-from-square text-[8px] ml-0.5"></i></span>
+                        </div>
+                        <p class="text-[10px] sm:text-[11px] text-zinc-600 mt-1 leading-relaxed">
+                            Riset acuan (Nature 2023) menggunakan <strong>SE-ResNet50 (26.1M parameter, 98.4 MB)</strong> yang butuh server GPU. Ketergantungan API cloud tidak layak di sentra pertanian karena sinyal seluler tidak stabil dan beban biaya sewa server.
+                        </p>
+                    </a>
+                </div>
+
+                <!-- Kolom Kanan: Solusi Edge AI Kita -->
+                <div class="md:col-span-5 flex flex-col justify-between space-y-2">
+                    <div class="mono-card-dark p-3 sm:p-4 flex-1">
+                        <span class="text-[9px] uppercase tracking-wider text-emerald-400 font-mono-code font-bold block mb-1"><i class="fa-solid fa-bolt mr-1"></i> Gagasan & Solusi Skripsi</span>
+                        <div class="text-sm sm:text-base font-extrabold text-white leading-snug">
+                            On-Device Offline Edge AI pada Smartphone
+                        </div>
+                        <p class="text-[10px] sm:text-[11px] text-zinc-300 mt-1.5 leading-relaxed">
+                            Menghadirkan model klasifikasi butir padi berakurasi setara model server (&gt;95%), namun dipadatkan hingga <strong>&le; 3 MB</strong> via arsitektur ultra-lightweight (MobileNetV4) dan kuantisasi INT8, sehingga dapat berjalan <strong>100% offline</strong> di ponsel Android murah tanpa kuota internet.
+                        </p>
+                        <div class="mt-2.5 pt-2.5 border-t border-zinc-800 grid grid-cols-3 gap-1.5 text-center">
+                            <div>
+                                <div class="text-xs font-mono-code font-bold text-white">0 ms</div>
+                                <div class="text-[9px] text-zinc-400">Network</div>
+                            </div>
+                            <div>
+                                <div class="text-xs font-mono-code font-bold text-emerald-400">2.6 MB</div>
+                                <div class="text-[9px] text-zinc-400">Ukuran</div>
+                            </div>
+                            <div>
+                                <div class="text-xs font-mono-code font-bold text-white">95.2%</div>
+                                <div class="text-[9px] text-zinc-400">Test Acc</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mono-card p-2 sm:p-2.5 bg-zinc-50 border-zinc-300">
+                        <div class="text-[10px] sm:text-[11px] font-bold text-zinc-900 font-mono-code"><i class="fa-solid fa-quote-left mr-1 text-zinc-400"></i> Landasan Rujukan Utama</div>
+                        <div class="text-[9px] sm:text-[10px] text-zinc-600 mt-0.5 leading-normal">
+                            Fan et al. (<em>Nature 2023</em>) &bull; BSN SNI 6128:2020 &bull; Google MobileNetV4 (Qin et al., 2024).
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 3: Analisis Karakteristik Dataset GrainSet Rice -->
+        <section class="slide flex-col justify-start md:justify-center max-w-5xl w-full mx-auto overflow-y-auto slide-scroll px-1 pt-1 md:pt-0" data-slide="3">
+            <div class="mb-2 sm:mb-3">
+                <div class="text-[9px] sm:text-[10px] font-bold uppercase tracking-widest text-zinc-500 font-mono-code">02. Eksplorasi Data & Problem Formulasi</div>
+                <h2 class="text-base sm:text-xl md:text-2xl font-extrabold text-zinc-950 mt-0.5">Karakteristik Dataset GrainSet Rice & Tantangan Imbalance</h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-2.5 sm:gap-4 items-center pb-2">
+                <!-- Chart Col -->
+                <div class="md:col-span-5 mono-card p-3 flex flex-col items-center">
+                    <div class="w-full flex justify-between items-center mb-1">
+                        <span class="text-[9px] sm:text-[10px] uppercase tracking-wider font-mono-code text-zinc-500 font-bold">Distribusi 8 Kelas Padi</span>
+                        <span class="badge-black text-[9px]">31.000 Citra</span>
+                    </div>
+                    <div class="relative w-full h-36 sm:h-44 my-0.5">
+                        <canvas id="chartRiceDist"></canvas>
+                    </div>
+                    <div class="w-full grid grid-cols-2 gap-1 text-[9px] sm:text-[10px] font-mono-code pt-1.5 border-t border-zinc-200">
+                        <div class="flex items-center space-x-1.5"><span class="w-2.5 h-2.5 bg-zinc-900 rounded-sm flex-shrink-0"></span><span class="truncate">Normal (66.0%)</span></div>
+                        <div class="flex items-center space-x-1.5"><span class="w-2.5 h-2.5 bg-zinc-400 rounded-sm flex-shrink-0"></span><span class="truncate">7 Cacat (~4.8% ea)</span></div>
+                    </div>
+                </div>
+
+                <!-- Insight Col -->
+                <div class="md:col-span-7 space-y-2">
+                    <div class="grid grid-cols-3 gap-1.5 sm:gap-2 text-center">
+                        <div class="mono-card p-1.5 sm:p-2 bg-white">
+                            <span class="text-[8px] sm:text-[9px] uppercase font-mono-code text-zinc-500 block">Training</span>
+                            <span class="text-sm sm:text-base font-extrabold text-zinc-950 font-mono-code">24.767</span>
+                            <span class="text-[8px] sm:text-[9px] text-zinc-500 block">(80%)</span>
+                        </div>
+                        <div class="mono-card p-1.5 sm:p-2 bg-white">
+                            <span class="text-[8px] sm:text-[9px] uppercase font-mono-code text-zinc-500 block">Validasi</span>
+                            <span class="text-sm sm:text-base font-extrabold text-zinc-950 font-mono-code">3.095</span>
+                            <span class="text-[8px] sm:text-[9px] text-zinc-500 block">(10%)</span>
+                        </div>
+                        <div class="mono-card p-1.5 sm:p-2 bg-white border-l-2 border-l-emerald-500">
+                            <span class="text-[8px] sm:text-[9px] uppercase font-mono-code text-emerald-700 font-bold block">Official Test</span>
+                            <span class="text-sm sm:text-base font-extrabold text-emerald-700 font-mono-code">3.100</span>
+                            <span class="text-[8px] sm:text-[9px] text-emerald-600 block">(Evaluasi)</span>
+                        </div>
+                    </div>
+
+                    <div class="mono-card p-2.5 sm:p-3 border-l-4 border-l-amber-500">
+                        <div class="text-xs font-bold text-zinc-950 flex items-center justify-between">
+                            <span>Tantangan: Class Imbalance Ekstrem</span>
+                            <span class="badge-outline text-[9px]">Rasio 14 : 1</span>
+                        </div>
+                        <p class="text-[10px] sm:text-[11px] text-zinc-600 mt-1 leading-relaxed">
+                            Kelas <strong>Normal</strong> mendominasi dengan 20.450 citra (~66%), sedangkan 7 kelas cacat (Fusarium, Sprouted, Moldy, Pest-attacked, Broken, Unripe, Impurities) masing-masing hanya 1.500 citra (~4.8%). Di test set hanya ada tepat <strong>150 sampel</strong> per kelas minoritas.
+                        </p>
+                    </div>
+
+                    <div class="mono-card-subtle p-2.5 sm:p-3 border border-zinc-200">
+                        <div class="text-[11px] sm:text-xs font-bold text-zinc-950 font-mono-code">Mengapa Macro-F1 Wajib Dipakai?</div>
+                        <p class="text-[10px] sm:text-[11px] text-zinc-600 mt-0.5 leading-relaxed">
+                            Akurasi bisa menipu karena didominasi kelas mayoritas. Evaluasi mutlak mengacu pada <strong>Macro-F1 Score</strong> yang membobot setara setiap kelas cacat:
+                        </p>
+                        <div class="mt-1.5 text-center font-mono-code text-[10px] sm:text-xs bg-white p-1 rounded border border-zinc-200 overflow-x-auto">
+                            $$\text{Macro F1} = \frac{1}{K} \sum_{k=1}^{K} \frac{2 \cdot P_k \cdot R_k}{P_k + R_k}, \quad K = 8$$
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 4: Replikasi Baseline SE-ResNet50 -->
+        <section class="slide flex-col justify-start md:justify-center max-w-5xl w-full mx-auto overflow-y-auto slide-scroll px-1 pt-1 md:pt-0" data-slide="4">
+            <div class="mb-2 sm:mb-3">
+                <div class="text-[9px] sm:text-[10px] font-bold uppercase tracking-widest text-zinc-500 font-mono-code">03. Verifikasi Baseline Paper Nature</div>
+                <h2 class="text-base sm:text-xl md:text-2xl font-extrabold text-zinc-950 mt-0.5">Replikasi Baseline SE-ResNet50: Sukses Melampaui Paper</h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-2.5 sm:gap-3.5 items-stretch pb-2">
+                <!-- Metrik Komparasi Kiri -->
+                <div class="md:col-span-5 space-y-2">
+                    <div class="mono-card-dark p-3">
+                        <span class="text-[9px] uppercase tracking-wider text-zinc-400 font-mono-code block mb-0.5">Hasil Test Set (3.100 Citra)</span>
+                        <div class="flex items-baseline space-x-2">
+                            <span class="text-xl sm:text-2xl font-black text-white font-mono-code">96.42%</span>
+                            <span class="text-xs text-emerald-400 font-semibold font-mono-code">+0.72% vs Paper</span>
+                        </div>
+                        <div class="text-[10px] sm:text-[11px] text-zinc-300 mt-0.5">Akurasi Replikasi SE-ResNet50</div>
+                        <div class="mt-2 pt-2 border-t border-zinc-800 grid grid-cols-2 gap-1.5 text-center">
+                            <div>
+                                <span class="text-[8px] sm:text-[9px] text-zinc-400 block">Macro F1</span>
+                                <span class="text-xs sm:text-sm font-bold text-white font-mono-code">94.48%</span>
+                                <span class="text-[8px] text-emerald-400 block font-mono-code">(Paper: 91.90%)</span>
+                            </div>
+                            <div>
+                                <span class="text-[8px] sm:text-[9px] text-zinc-400 block">Weighted F1</span>
+                                <span class="text-xs sm:text-sm font-bold text-white font-mono-code">96.59%</span>
+                                <span class="text-[8px] text-zinc-400 block font-mono-code">(Paper: 95.80%)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mono-card p-2.5 sm:p-3 border-l-4 border-l-red-500">
+                        <div class="text-[11px] sm:text-xs font-bold text-zinc-950 font-mono-code">Bottleneck Model Baseline:</div>
+                        <ul class="text-[10px] sm:text-[11px] text-zinc-600 mt-1 space-y-0.5 list-disc list-inside">
+                            <li><strong>26.1M Parameter</strong> (Terlalu boros komputasi).</li>
+                            <li><strong>98.4 MB File ONNX FP32</strong> (Terlalu berat untuk mobile).</li>
+                            <li>Training <strong>~140 detik / epoch</strong> (7x lebih lambat).</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Per-Class Table Kanan -->
+                <div class="md:col-span-7 mono-card p-3 flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-center mb-1.5">
+                            <span class="text-[11px] sm:text-xs font-bold text-zinc-950 font-mono-code">Breakdown Performa 8 Kategori Mutu Beras</span>
+                            <span class="badge-black text-[9px]">Test 3.100 citra</span>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left text-[10px] sm:text-[11px] font-mono-code min-w-[280px]">
+                                <thead>
+                                    <tr class="border-b border-zinc-200 text-zinc-500 text-[9px] sm:text-[10px]">
+                                        <th class="py-1">Kelas</th>
+                                        <th class="py-1">Nama Kategori</th>
+                                        <th class="py-1 text-center">Prec</th>
+                                        <th class="py-1 text-center">Rec</th>
+                                        <th class="py-1 text-right">F1-Score</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-zinc-100 text-zinc-800">
+                                    <tr><td class="py-0.5 text-zinc-400">0</td><td>Normal (Sehat)</td><td class="text-center">96.4%</td><td class="text-center">99.4%</td><td class="text-right font-bold text-zinc-950">97.88%</td></tr>
+                                    <tr><td class="py-0.5 text-zinc-400">1</td><td>Fusarium (Kapur)</td><td class="text-center">97.4%</td><td class="text-center">98.0%</td><td class="text-right font-bold text-zinc-950">97.67%</td></tr>
+                                    <tr><td class="py-0.5 text-zinc-400">2</td><td>Sprouted (Tunas)</td><td class="text-center">88.5%</td><td class="text-center">76.0%</td><td class="text-right font-bold text-amber-600">81.77%</td></tr>
+                                    <tr><td class="py-0.5 text-zinc-400">3</td><td>Moldy (Jamur)</td><td class="text-center">95.0%</td><td class="text-center">90.5%</td><td class="text-right font-bold text-zinc-950">92.67%</td></tr>
+                                    <tr><td class="py-0.5 text-zinc-400">4</td><td>Pest Attacked</td><td class="text-center">94.7%</td><td class="text-center">95.7%</td><td class="text-right font-bold text-zinc-950">95.18%</td></tr>
+                                    <tr><td class="py-0.5 text-zinc-400">5</td><td>Broken (Patah)</td><td class="text-center">95.4%</td><td class="text-center">97.8%</td><td class="text-right font-bold text-zinc-950">96.62%</td></tr>
+                                    <tr><td class="py-0.5 text-zinc-400">6</td><td>Unripe (Muda)</td><td class="text-center">95.4%</td><td class="text-center">94.2%</td><td class="text-right font-bold text-zinc-950">94.81%</td></tr>
+                                    <tr><td class="py-0.5 text-zinc-400">7</td><td>Impurities</td><td class="text-center">98.6%</td><td class="text-center">100%</td><td class="text-right font-bold text-emerald-600">99.26%</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="mt-1.5 pt-1.5 border-t border-zinc-200 text-[9px] sm:text-[10px] text-zinc-500">
+                        <span class="font-bold text-zinc-700">Catatan:</span> Kelas <em>Sprouted</em> (berkecambah awal) memiliki tingkat kesulitan visual tertinggi karena morfologi tunas mikro mirip beras normal (F1 81.77%).
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 5: Eksplorasi 4 Model Lightweight Edge AI -->
+        <section class="slide flex-col justify-start md:justify-center max-w-5xl w-full mx-auto overflow-y-auto slide-scroll px-1 pt-1 md:pt-0" data-slide="5">
+            <div class="mb-2 sm:mb-3">
+                <div class="text-[9px] sm:text-[10px] font-bold uppercase tracking-widest text-zinc-500 font-mono-code">04. Eksplorasi Arsitektur Edge AI</div>
+                <h2 class="text-base sm:text-xl md:text-2xl font-extrabold text-zinc-950 mt-0.5">Benchmark 4 Kandidat Model Ringan vs Baseline</h2>
+            </div>
+            
+            <!-- Tabel Perbandingan Komprehensif (Scrollable on Mobile) -->
+            <div class="mono-card p-2 sm:p-3 mb-2 sm:mb-3 overflow-x-auto">
+                <div class="text-[9px] text-zinc-400 sm:hidden mb-1 font-mono-code"><i class="fa-solid fa-arrows-left-right mr-1"></i> Geser tabel horizontal untuk melihat metrik lengkap</div>
+                <table class="w-full text-left text-[10px] sm:text-[11px] font-mono-code min-w-[520px]">
+                    <thead>
+                        <tr class="border-b border-zinc-200 text-zinc-500 text-[9px] sm:text-[10px]">
+                            <th class="py-1">Model</th>
+                            <th class="py-1 text-center">Params</th>
+                            <th class="py-1 text-center">ONNX FP32</th>
+                            <th class="py-1 text-center">INT8</th>
+                            <th class="py-1 text-center">Akurasi</th>
+                            <th class="py-1 text-center">Macro F1</th>
+                            <th class="py-1 text-right">Status Mobile</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-zinc-100 text-zinc-800">
+                        <tr class="bg-zinc-50/50">
+                            <td class="py-1.5 font-bold text-zinc-950">SE-ResNet50 <span class="badge-outline text-[8px]">Base</span></td>
+                            <td class="text-center">26.11M</td>
+                            <td class="text-center font-semibold text-red-600">98.4 MB</td>
+                            <td class="text-center text-zinc-400">~25 MB</td>
+                            <td class="text-center font-bold">96.42%</td>
+                            <td class="text-center font-bold">94.48%</td>
+                            <td class="text-right text-red-600 font-semibold"><i class="fa-solid fa-circle-xmark mr-1"></i> Terlalu Berat</td>
+                        </tr>
+                        <tr class="bg-emerald-50/60 border border-emerald-300">
+                            <td class="py-1.5 font-extrabold text-emerald-950">MobileNetV4 <span class="badge-green text-[8px]">Google 24</span></td>
+                            <td class="text-center font-bold text-emerald-800">2.50M</td>
+                            <td class="text-center font-bold text-emerald-800">9.6 MB</td>
+                            <td class="text-center font-extrabold text-emerald-700 bg-emerald-100 rounded px-1">2.6 MB</td>
+                            <td class="text-center font-bold text-emerald-900">95.23%</td>
+                            <td class="text-center font-bold text-emerald-900">92.19%</td>
+                            <td class="text-right text-emerald-700 font-bold"><i class="fa-solid fa-circle-check mr-1"></i> Rekomendasi (10x Ringan)</td>
+                        </tr>
+                        <tr>
+                            <td class="py-1.5 font-medium">EfficientNet-B0</td>
+                            <td class="text-center">4.02M</td>
+                            <td class="text-center">16.2 MB</td>
+                            <td class="text-center text-zinc-600">4.2 MB</td>
+                            <td class="text-center">95.71%</td>
+                            <td class="text-center">93.00%</td>
+                            <td class="text-right text-zinc-700 font-semibold"><i class="fa-solid fa-check mr-1"></i> Akurat, 16.2 MB</td>
+                        </tr>
+                        <tr>
+                            <td class="py-1.5 font-medium">MobileNetV3-L</td>
+                            <td class="text-center">4.21M</td>
+                            <td class="text-center">17.0 MB</td>
+                            <td class="text-center text-zinc-600">4.4 MB</td>
+                            <td class="text-center">95.03%</td>
+                            <td class="text-center">92.55%</td>
+                            <td class="text-right text-zinc-700 font-semibold"><i class="fa-solid fa-check mr-1"></i> Standar Android</td>
+                        </tr>
+                        <tr>
+                            <td class="py-1.5 font-medium">EdgeNeXt-XS</td>
+                            <td class="text-center font-semibold">2.15M</td>
+                            <td class="text-center">8.4 MB</td>
+                            <td class="text-center text-zinc-600">2.2 MB</td>
+                            <td class="text-center text-amber-600">88.00%</td>
+                            <td class="text-center text-amber-600">78.91%</td>
+                            <td class="text-right text-amber-600"><i class="fa-solid fa-triangle-exclamation mr-1"></i> Butuh Pre-training</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Bar Chart Perbandingan Parameter vs Akurasi -->
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-2.5 items-center pb-2">
+                <div class="md:col-span-7 mono-card p-2.5 sm:p-3">
+                    <span class="text-[9px] sm:text-[10px] uppercase tracking-wider font-mono-code text-zinc-500 font-bold block mb-1">Visualisasi: Parameter (M) vs Akurasi Test (%)</span>
+                    <div class="h-32 sm:h-36">
+                        <canvas id="chartModelComparison"></canvas>
+                    </div>
+                </div>
+                <div class="md:col-span-5 space-y-2">
+                    <div class="mono-card p-2 sm:p-2.5 border-l-4 border-l-emerald-600 bg-white">
+                        <div class="text-[10px] sm:text-[11px] font-bold text-zinc-950 font-mono-code">Temuan Kunci Eksperimen:</div>
+                        <p class="text-[9px] sm:text-[10px] text-zinc-600 mt-0.5 leading-relaxed">
+                            <strong>MobileNetV4-Small</strong> hanya mengalami penurunan akurasi <strong>1.19%</strong> dibanding baseline 26M, namun menghemat parameter <strong>90.4%</strong> dan training 7x lebih cepat (19.8s vs 140s).
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 6: Kompresi Model & Kuantisasi INT8 -->
+        <section class="slide flex-col justify-start md:justify-center max-w-5xl w-full mx-auto overflow-y-auto slide-scroll px-1 pt-1 md:pt-0" data-slide="6">
+            <div class="mb-2 sm:mb-3">
+                <div class="text-[9px] sm:text-[10px] font-bold uppercase tracking-widest text-zinc-500 font-mono-code">05. Teknik Kompresi & Kuantisasi</div>
+                <h2 class="text-base sm:text-xl md:text-2xl font-extrabold text-zinc-950 mt-0.5">Post-Training Quantization (PTQ) INT8: Reduksi Ukuran 97.3%</h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-2.5 sm:gap-3.5 items-stretch pb-2">
+                <!-- Kolom Kiri: Reduksi Visual -->
+                <div class="md:col-span-6 space-y-2">
+                    <div class="mono-card p-2.5 sm:p-3">
+                        <span class="text-[9px] sm:text-[10px] uppercase tracking-wider font-mono-code text-zinc-500 font-bold block mb-1">Perjalanan Kompresi Model (Ukuran File Disk)</span>
+                        <div class="h-32 sm:h-36 my-0.5">
+                            <canvas id="chartQuantSize"></canvas>
+                        </div>
+                        <div class="text-[9px] sm:text-[10px] text-zinc-500 text-center font-mono-code mt-0.5">
+                            Reduksi dari Baseline (98.4 MB) ke MobNetV4 INT8 (2.6 MB) = <strong class="text-emerald-600">97.3% Penghematan</strong>
+                        </div>
+                    </div>
+
+                    <div class="mono-card p-2 sm:p-2.5 border-l-4 border-l-blue-600">
+                        <div class="text-[10px] sm:text-xs font-bold text-zinc-950 font-mono-code">Formulasi Kuantisasi Integer Asimetris:</div>
+                        <div class="mt-1 text-center font-mono-code text-[10px] sm:text-xs bg-zinc-50 p-1.5 rounded border border-zinc-200 overflow-x-auto">
+                            $$q = \text{round}\left( \frac{r}{S} \right) + Z, \quad S = \frac{r_{\max} - r_{\min}}{q_{\max} - q_{\min}}$$
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Kolom Kanan: Dampak Akurasi & Efisiensi -->
+                <div class="md:col-span-6 space-y-2">
+                    <div class="mono-card-dark p-3">
+                        <span class="text-[9px] uppercase tracking-wider text-emerald-400 font-mono-code font-bold block mb-1">Dampak Kuantisasi pada Prediksi</span>
+                        <div class="grid grid-cols-2 gap-2 mt-1">
+                            <div class="p-2 bg-zinc-900 rounded border border-zinc-800 text-center">
+                                <span class="text-[9px] text-zinc-400 block font-mono-code">FP32 ONNX</span>
+                                <span class="text-base sm:text-lg font-bold text-white font-mono-code">9.6 MB</span>
+                                <span class="text-[9px] text-zinc-300 block font-mono-code mt-0.5">Acc: 95.23%</span>
+                                <span class="text-[8px] text-zinc-400 block font-mono-code">F1: 92.19%</span>
+                            </div>
+                            <div class="p-2 bg-zinc-900 rounded border border-emerald-800 text-center">
+                                <span class="text-[9px] text-emerald-400 block font-mono-code">INT8 ONNX</span>
+                                <span class="text-base sm:text-lg font-bold text-emerald-400 font-mono-code">2.6 MB</span>
+                                <span class="text-[9px] text-emerald-300 block font-mono-code mt-0.5">Acc: ~95.1%</span>
+                                <span class="text-[8px] text-emerald-400 block font-mono-code">&Delta; F1 &lt; 0.2%</span>
+                            </div>
+                        </div>
+                        <div class="mt-2 pt-1.5 border-t border-zinc-800 text-[9px] text-zinc-300">
+                            <i class="fa-solid fa-shield-halved text-emerald-400 mr-1"></i> Penurunan akurasi mendekati nol (&lt; 0.2%), namun memori terpangkas 73% dari FP32 asli.
+                        </div>
+                    </div>
+
+                    <div class="mono-card p-2.5 sm:p-3">
+                        <div class="text-[11px] sm:text-xs font-bold text-zinc-950 font-mono-code">Keunggulan Ukuran 2.6 MB di Smartphone:</div>
+                        <ul class="text-[9px] sm:text-[10px] text-zinc-600 mt-1 space-y-1 list-disc list-inside">
+                            <li><strong>In-App Asset</strong>: Di-bundle langsung dalam file APK (tanpa download model saat install).</li>
+                            <li><strong>Aman dari Crash OOM</strong>: Memakan RAM &lt; 25 MB, aman di HP Android Rp 1 jutaan.</li>
+                            <li><strong>Akselerasi CPU</strong>: Menggunakan instruksi INT8 SIMD NEON pada chipset ARM Cortex.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 7: Desain Arsitektur Mobile Edge App -->
+        <section class="slide flex-col justify-start md:justify-center max-w-5xl w-full mx-auto overflow-y-auto slide-scroll px-1 pt-1 md:pt-0" data-slide="7">
+            <div class="mb-2 sm:mb-3">
+                <div class="text-[9px] sm:text-[10px] font-bold uppercase tracking-widest text-zinc-500 font-mono-code">06. Rencana Implementasi Sistem Mobile</div>
+                <h2 class="text-base sm:text-xl md:text-2xl font-extrabold text-zinc-950 mt-0.5">Arsitektur Aplikasi Mobile: Kamera ke Rekapitulasi SNI</h2>
+            </div>
+            
+            <!-- Pipeline Flow Diagram (Responsive: 1-col on mobile, 5-col on desktop) -->
+            <div class="mono-card p-2.5 sm:p-3.5 mb-2.5">
+                <div class="text-[9px] sm:text-[10px] uppercase font-mono-code text-zinc-500 font-bold mb-2 flex items-center justify-between">
+                    <span>Pipeline Inferensi On-Device (100% Offline Tanpa Internet)</span>
+                    <span class="badge-black text-[8px] sm:text-[9px]">Target Latency &lt; 40 ms</span>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-1.5 sm:gap-2 text-center text-xs">
+                    <div class="p-2 bg-zinc-50 rounded border border-zinc-200 flex flex-col justify-between">
+                        <div class="text-zinc-500 font-mono-code text-[9px]">STEP 1</div>
+                        <div class="my-1 text-zinc-950 font-bold text-xs"><i class="fa-solid fa-camera mb-0.5 block text-sm text-zinc-700"></i> Kamera Smartphone</div>
+                        <div class="text-[9px] text-zinc-500">Capture / Live preview bulir beras di cawan</div>
+                    </div>
+                    <div class="p-2 bg-zinc-50 rounded border border-zinc-200 flex flex-col justify-between">
+                        <div class="text-zinc-500 font-mono-code text-[9px]">STEP 2</div>
+                        <div class="my-1 text-zinc-950 font-bold text-xs"><i class="fa-solid fa-crop-simple mb-0.5 block text-sm text-blue-600"></i> Preprocessing</div>
+                        <div class="text-[9px] text-zinc-500">Auto crop $224 \times 224 \times 3$, norm ImageNet</div>
+                    </div>
+                    <div class="p-2 bg-zinc-900 text-white rounded border border-zinc-950 flex flex-col justify-between">
+                        <div class="text-emerald-400 font-mono-code text-[9px]">STEP 3 (CORE)</div>
+                        <div class="my-1 font-bold text-xs"><i class="fa-solid fa-microchip mb-0.5 block text-sm text-emerald-400"></i> ONNX Mobile</div>
+                        <div class="text-[9px] text-zinc-300">Eksekusi MobileNetV4 INT8 CPU / NNAPI</div>
+                    </div>
+                    <div class="p-2 bg-zinc-50 rounded border border-zinc-200 flex flex-col justify-between">
+                        <div class="text-zinc-500 font-mono-code text-[9px]">STEP 4</div>
+                        <div class="my-1 text-zinc-950 font-bold text-xs"><i class="fa-solid fa-layer-group mb-0.5 block text-sm text-purple-600"></i> 8 Kelas Mutu</div>
+                        <div class="text-[9px] text-zinc-500">Probabilitas Softmax kelas Normal vs 7 Cacat</div>
+                    </div>
+                    <div class="p-2 bg-zinc-50 rounded border border-zinc-200 flex flex-col justify-between">
+                        <div class="text-zinc-500 font-mono-code text-[9px]">STEP 5</div>
+                        <div class="my-1 text-zinc-950 font-bold text-xs"><i class="fa-solid fa-file-invoice mb-0.5 block text-sm text-emerald-600"></i> Rapor SNI</div>
+                        <div class="text-[9px] text-zinc-500">Rekap: Mutu 1 / Mutu 2 / Substandar</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Detail Fitur Aplikasi -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-2 pb-2">
+                <div class="mono-card p-2.5">
+                    <div class="flex items-center space-x-2 mb-1">
+                        <div class="w-5 h-5 rounded bg-zinc-100 flex items-center justify-center text-xs text-zinc-900"><i class="fa-solid fa-calculator"></i></div>
+                        <div class="text-xs font-bold text-zinc-950">Agregasi Proporsi Cacat</div>
+                    </div>
+                    <p class="text-[10px] text-zinc-600 leading-relaxed">
+                        Aplikasi otomatis menghitung rasio butir patah dan cacat dari sampel, membandingkannya dengan batas toleransi SNI 6128:2020.
+                    </p>
+                </div>
+                <div class="mono-card p-2.5">
+                    <div class="flex items-center space-x-2 mb-1">
+                        <div class="w-5 h-5 rounded bg-zinc-100 flex items-center justify-center text-xs text-zinc-900"><i class="fa-solid fa-wifi-slash"></i></div>
+                        <div class="text-xs font-bold text-zinc-950">Zero Server Cost</div>
+                    </div>
+                    <p class="text-[10px] text-zinc-600 leading-relaxed">
+                        Citra diproses lokal di RAM ponsel tanpa pernah dikirim ke internet. Bebas biaya cloud server, cocok untuk operasional mandiri di penggilingan desa.
+                    </p>
+                </div>
+                <div class="mono-card p-2.5">
+                    <div class="flex items-center space-x-2 mb-1">
+                        <div class="w-5 h-5 rounded bg-zinc-100 flex items-center justify-center text-xs text-zinc-900"><i class="fa-brands fa-android"></i></div>
+                        <div class="text-xs font-bold text-zinc-950">Cross-Platform Flutter</div>
+                    </div>
+                    <p class="text-[10px] text-zinc-600 leading-relaxed">
+                        Pengembangan mobile menggunakan Flutter dengan binding <span class="font-mono-code text-[9px] bg-zinc-100 px-1 rounded">onnxruntime</span> C-API untuk performa optimal di Android.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 8: Landasan Teori & Referensi Akademik Terverifikasi -->
+        <section class="slide flex-col justify-start md:justify-center max-w-5xl w-full mx-auto overflow-y-auto slide-scroll px-1 pt-1 md:pt-0" data-slide="8">
+            <div class="mb-2 sm:mb-3">
+                <div class="text-[9px] sm:text-[10px] font-bold uppercase tracking-widest text-zinc-500 font-mono-code">07. Rujukan Ilmiah & Kajian Pustaka</div>
+                <h2 class="text-base sm:text-xl md:text-2xl font-extrabold text-zinc-950 mt-0.5">Daftar Referensi Resmi (Non-Fiktif) & Sintesis Temuan</h2>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-2 sm:gap-2.5 pb-2">
+                <!-- Ref 1 -->
+                <div class="mono-card p-2.5 border-l-4 border-l-zinc-900">
+                    <div class="flex justify-between items-start">
+                        <span class="badge-black text-[8px] sm:text-[9px]">Dataset Primer</span>
+                        <a href="https://doi.org/10.1038/s41597-023-02660-8" target="_blank" rel="noopener noreferrer" class="text-[9px] text-blue-600 underline font-mono-code">Nature 2023 <i class="fa-solid fa-arrow-up-right-from-square text-[8px]"></i></a>
+                    </div>
+                    <div class="text-xs font-bold text-zinc-950 mt-1">Fan, L., Ding, Y., Fan, D., et al. (2023)</div>
+                    <div class="text-[9px] text-zinc-500 italic">Scientific Data (Nature), 10:778. DOI: 10.1038/s41597-023-02660-8</div>
+                    <p class="text-[10px] text-zinc-600 mt-1 leading-relaxed">
+                        <strong>Sintesis:</strong> Database GrainSet (350K+ citra). Khusus padi: 31.000 citra, 8 kelas mutu. Baseline SE-ResNet50 akurasi 95.70% & F1 91.90%, namun berukuran 26.1M parameter (98.4 MB) sehingga tidak aplikatif di edge.
+                    </p>
+                </div>
+
+                <!-- Ref 2 -->
+                <div class="mono-card p-2.5 border-l-4 border-l-blue-600">
+                    <div class="flex justify-between items-start">
+                        <span class="badge-blue text-[8px] sm:text-[9px]">Standar Regulasi</span>
+                        <a href="https://uptdbpsmb.babelprov.go.id/sites/default/files/anggaran/SNI%206128%202020%20_%20Beras.pdf" target="_blank" rel="noopener noreferrer" class="text-[9px] text-blue-600 underline font-mono-code">BSN 2020 <i class="fa-solid fa-arrow-up-right-from-square text-[8px]"></i></a>
+                    </div>
+                    <div class="text-xs font-bold text-zinc-950 mt-1">Badan Standardisasi Nasional (BSN) (2020)</div>
+                    <div class="text-[9px] text-zinc-500 italic">SNI 6128:2020 — Beras Giling: Syarat Mutu dan Metode Pengujian</div>
+                    <p class="text-[10px] text-zinc-600 mt-1 leading-relaxed">
+                        <strong>Sintesis:</strong> Menetapkan ambang toleransi butir patah, menir, butir mengapur/rusak, dan butir kuning/berjamur untuk klasifikasi Mutu 1 (Premium), Mutu 2 (Medium), dan Mutu 3 di Indonesia.
+                    </p>
+                </div>
+
+                <!-- Ref 3 -->
+                <div class="mono-card p-2.5 border-l-4 border-l-emerald-600">
+                    <div class="flex justify-between items-start">
+                        <span class="badge-green text-[8px] sm:text-[9px]">Edge AI Universal</span>
+                        <a href="https://arxiv.org/abs/2404.10518" target="_blank" rel="noopener noreferrer" class="text-[9px] text-blue-600 underline font-mono-code">Google 2024 <i class="fa-solid fa-arrow-up-right-from-square text-[8px]"></i></a>
+                    </div>
+                    <div class="text-xs font-bold text-zinc-950 mt-1">Qin, D., Leichner, C., Delakis, M., et al. (Google) (2024)</div>
+                    <div class="text-[9px] text-zinc-500 italic">MobileNetV4: Universal Models for the Mobile Ecosystem. arXiv:2404.10518</div>
+                    <p class="text-[10px] text-zinc-600 mt-1 leading-relaxed">
+                        <strong>Sintesis:</strong> Memperkenalkan Universal Inverted Bottleneck (UIB) dan Mobile MQA. Terbukti mencapai efisiensi Pareto-optimal di mobile hardware, meraih akurasi 95.23% pada dataset beras kita.
+                    </p>
+                </div>
+
+                <!-- Ref 4 -->
+                <div class="mono-card p-2.5 border-l-4 border-l-purple-600">
+                    <div class="flex justify-between items-start">
+                        <span class="badge-outline text-[8px] sm:text-[9px]">Kuantisasi Integer</span>
+                        <a href="https://openaccess.thecvf.com/content_cvpr_2018/papers/Jacob_Quantization_and_Training_CVPR_2018_paper.pdf" target="_blank" rel="noopener noreferrer" class="text-[9px] text-blue-600 underline font-mono-code">IEEE CVPR <i class="fa-solid fa-arrow-up-right-from-square text-[8px]"></i></a>
+                    </div>
+                    <div class="text-xs font-bold text-zinc-950 mt-1">Jacob, B., Kligys, S., Chen, B., et al. (2018)</div>
+                    <div class="text-[9px] text-zinc-500 italic">Quantization and Training for Efficient Integer Inference. CVPR: 2704-2713</div>
+                    <p class="text-[10px] text-zinc-600 mt-1 leading-relaxed">
+                        <strong>Sintesis:</strong> Landasan konversi FP32 ke INT8 integer-only. Memangkas konsumsi bandwidth memori dan daya baterai seluler hingga 75% tanpa degradasi signifikan pada representasi fitur.
+                    </p>
+                </div>
+            </div>
+            <div class="mt-1 text-right">
+                <span class="text-[9px] text-zinc-500 font-mono-code">Rujukan lain: Chen et al. (Nature 2024), Tan & Le (ICML 2019), Howard et al. (ICCV 2019).</span>
+            </div>
+        </section>
+
+        <!-- SLIDE 9: Rangkuman Kemajuan & Poin Diskusi Bimbingan -->
+        <section class="slide flex-col justify-start md:justify-center max-w-5xl w-full mx-auto overflow-y-auto slide-scroll px-1 pt-1 md:pt-0" data-slide="9">
+            <div class="mb-2 sm:mb-3">
+                <div class="text-[9px] sm:text-[10px] font-bold uppercase tracking-widest text-zinc-500 font-mono-code">08. Status Kemajuan & Tindak Lanjut</div>
+                <h2 class="text-base sm:text-xl md:text-2xl font-extrabold text-zinc-950 mt-0.5">Ringkasan Capaian & Agenda Diskusi Bimbingan</h2>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-2.5 sm:gap-3.5 items-stretch pb-2">
+                <!-- Checklist Capaian Kiri -->
+                <div class="md:col-span-6 space-y-2">
+                    <div class="mono-card p-2.5 sm:p-3">
+                        <div class="text-xs font-bold text-zinc-950 font-mono-code mb-1.5 flex items-center justify-between">
+                            <span>Checklist Capaian Praktis</span>
+                            <span class="badge-green text-[9px]">Selesai 100%</span>
+                        </div>
+                        <ul class="text-[10px] sm:text-[11px] text-zinc-700 space-y-1.5">
+                            <li class="flex items-center space-x-1.5">
+                                <i class="fa-solid fa-circle-check text-emerald-600 text-xs flex-shrink-0"></i>
+                                <span>Lingkungan remote (`pc-putih` RTX 4060) terkonfigurasi.</span>
+                            </li>
+                            <li class="flex items-center space-x-2">
+                                <i class="fa-solid fa-circle-check text-emerald-600 text-xs flex-shrink-0"></i>
+                                <span>Dataset GrainSet Rice (31.000 citra, 8 kelas) tervalidasi.</span>
+                            </li>
+                            <li class="flex items-center space-x-2">
+                                <i class="fa-solid fa-circle-check text-emerald-600 text-xs flex-shrink-0"></i>
+                                <span>Baseline SE-ResNet50 dilatih: Akurasi 96.42% (lampaui paper).</span>
+                            </li>
+                            <li class="flex items-center space-x-2">
+                                <i class="fa-solid fa-circle-check text-emerald-600 text-xs flex-shrink-0"></i>
+                                <span>4 Model Lightweight Edge AI selesai di-benchmark.</span>
+                            </li>
+                            <li class="flex items-center space-x-2">
+                                <i class="fa-solid fa-circle-check text-emerald-600 text-xs flex-shrink-0"></i>
+                                <span>Kuantisasi INT8 MobileNetV4 sukses mereduksi ke 2.6 MB.</span>
+                            </li>
+                            <li class="flex items-center space-x-2">
+                                <i class="fa-solid fa-circle-check text-emerald-600 text-xs flex-shrink-0"></i>
+                                <span>Pelacakan eksperimen live via W&B tersinkron penuh.</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="mono-card p-2 sm:p-2.5 bg-zinc-50 border-zinc-200">
+                        <div class="text-[10px] sm:text-[11px] font-bold text-zinc-800 font-mono-code"><i class="fa-solid fa-link mr-1"></i> Akses Kode & Artifact:</div>
+                        <div class="text-[9px] sm:text-[10px] text-zinc-600 font-mono-code mt-0.5 space-y-0.5">
+                            <div>GitHub: <a href="https://github.com/jaweed3/GrainSet" target="_blank" rel="noopener noreferrer" class="underline text-blue-600">jaweed3/GrainSet</a> &bull; <a href="https://github.com/jaweed3/skripsi-slides" target="_blank" rel="noopener noreferrer" class="underline text-blue-600">skripsi-slides</a></div>
+                            <div>W&B: <a href="https://forge.coreweave.com/wandb/wedjaw22-jaweed3/skripsi-rice-inspection" target="_blank" rel="noopener noreferrer" class="underline text-zinc-800">skripsi-rice-inspection</a></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Poin Diskusi dengan Pembimbing Kanan -->
+                <div class="md:col-span-6 space-y-2">
+                    <div class="mono-card-dark p-3">
+                        <div class="text-xs font-bold text-white font-mono-code mb-1.5 flex items-center justify-between">
+                            <span><i class="fa-solid fa-comments text-amber-400 mr-1.5"></i> Poin Bimbingan Ustadz Oddy</span>
+                            <span class="badge-outline text-[8px] text-zinc-300 border-zinc-700 bg-zinc-800">Konsultasi</span>
+                        </div>
+                        <div class="space-y-1.5 text-[10px] sm:text-[11px] text-zinc-300">
+                            <div class="p-2 bg-zinc-900 rounded border border-zinc-800">
+                                <strong class="text-white block mb-0.5">1. Penetapan Arsitektur Utama</strong>
+                                Apakah fokus mobile diarahkan penuh pada <strong>MobileNetV4-Small</strong> (2.6 MB INT8) atau menyertakan <strong>EfficientNet-B0</strong> sebagai komparasi sekunder?
+                            </div>
+                            <div class="p-2 bg-zinc-900 rounded border border-zinc-800">
+                                <strong class="text-white block mb-0.5">2. Metrik Standar Penilaian Mutu (SNI)</strong>
+                                Penggabungan hasil klasifikasi per-butir menjadi rapor mutu beras SNI 6128:2020 dari $N$ sampel per piringan foto.
+                            </div>
+                            <div class="p-2 bg-zinc-900 rounded border border-zinc-800">
+                                <strong class="text-white block mb-0.5">3. Rencana Penulisan Proposal</strong>
+                                Penyusunan naskah Bab 1-3 pada template LaTeX UNIDA yang sudah disiapkan.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mono-card p-2 text-center bg-emerald-50 border-emerald-200">
+                        <span class="text-[11px] sm:text-xs font-bold text-emerald-900 font-mono-code">Siap Lanjut ke Penyusunan Proposal Skripsi (LaTeX)</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
     </main>
 
-    <!-- Bottom Action Bar / Keyboard Hint -->
-    <footer
-      class="flex items-center justify-between pt-2 border-t border-zinc-200 text-xs text-zinc-500 font-mono-code z-20"
-    >
-      <div class="flex items-center space-x-2">
-        <button
-          onclick="prevSlide()"
-          class="p-1 px-2.5 bg-white hover:bg-zinc-100 text-zinc-700 rounded border border-zinc-200 text-xs transition shadow-sm"
-          title="Slide Sebelumnya (Arrow Left)"
-        >
-          <i class="fa-solid fa-chevron-left mr-1"></i> Prev
-        </button>
-        <button
-          onclick="nextSlide()"
-          class="p-1 px-2.5 bg-white hover:bg-zinc-100 text-zinc-700 rounded border border-zinc-200 text-xs transition shadow-sm"
-          title="Slide Selanjutnya (Arrow Right / Space)"
-        >
-          Next <i class="fa-solid fa-chevron-right ml-1"></i>
-        </button>
-      </div>
-      <div class="flex items-center space-x-1.5" id="slide-dots">
-        <!-- Dynamic dots rendered via JS -->
-      </div>
-      <div>
-        <span class="text-[10px] text-zinc-400">UNIDA Gontor &copy; 2026</span>
-      </div>
+    <!-- Bottom Thumb-Friendly Action Bar -->
+    <footer class="flex items-center justify-between pt-1.5 sm:pt-2 border-t border-zinc-200 text-xs text-zinc-500 font-mono-code z-20">
+        <div class="flex items-center space-x-1.5 sm:space-x-2">
+            <button onclick="prevSlide()" class="h-9 sm:h-8 px-3 sm:px-2.5 bg-white hover:bg-zinc-100 active:bg-zinc-200 text-zinc-800 rounded border border-zinc-200 text-xs transition shadow-sm flex items-center font-bold select-none" title="Slide Sebelumnya (Arrow Left / Swipe Right)">
+                <i class="fa-solid fa-chevron-left mr-1"></i> Prev
+            </button>
+            <button onclick="nextSlide()" class="h-9 sm:h-8 px-3.5 sm:px-2.5 bg-zinc-950 hover:bg-zinc-800 active:bg-zinc-700 text-white rounded border border-zinc-950 text-xs transition shadow-sm flex items-center font-bold select-none" title="Slide Selanjutnya (Arrow Right / Space / Swipe Left)">
+                Next <i class="fa-solid fa-chevron-right ml-1"></i>
+            </button>
+            <span class="hidden md:inline-block text-[11px] text-zinc-400 pl-2">
+                Shortcut: <span class="bg-zinc-200/70 text-zinc-800 px-1 rounded text-[10px]">← / →</span> Navigasi &bull; <span class="bg-zinc-200/70 text-zinc-800 px-1 rounded text-[10px]">F</span> Layar Penuh
+            </span>
+            <span class="inline-flex md:hidden items-center text-[10px] text-zinc-400 pl-1 font-mono-code">
+                <i class="fa-solid fa-arrows-left-right mr-1"></i> swipe
+            </span>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-1.5 py-1 px-1" id="slide-dots">
+            <!-- Dynamic dots rendered via JS -->
+        </div>
+        <div class="hidden sm:block">
+            <span class="text-[10px] text-zinc-400">UNIDA &copy; 2026</span>
+        </div>
     </footer>
 
-    <!-- Interactive Logic & Chart.js -->
+    <!-- Interactive Logic, Touch Swipes, & Chart.js -->
     <script>
-      let currentSlide = 1;
-      const totalSlides = 9;
-      let chartInstances = {};
+        let currentSlide = 1;
+        const totalSlides = 9;
+        let chartInstances = {};
 
-      function initDots() {
-        const container = document.getElementById("slide-dots");
-        container.innerHTML = "";
-        for (let i = 1; i <= totalSlides; i++) {
-          const dot = document.createElement("button");
-          dot.className = `w-2 h-2 rounded-full transition-all duration-200 ${i === currentSlide ? "bg-zinc-950 w-5" : "bg-zinc-300 hover:bg-zinc-400"}`;
-          dot.onclick = () => showSlide(i);
-          dot.title = `Go to slide ${i}`;
-          container.appendChild(dot);
+        function initDots() {
+            const container = document.getElementById('slide-dots');
+            container.innerHTML = '';
+            for (let i = 1; i <= totalSlides; i++) {
+                const dot = document.createElement('button');
+                dot.className = `h-2 rounded-full transition-all duration-200 ${i === currentSlide ? 'bg-zinc-950 w-5' : 'bg-zinc-300 hover:bg-zinc-400 w-2'}`;
+                dot.onclick = () => showSlide(i);
+                dot.title = `Slide ${i}`;
+                dot.setAttribute('aria-label', `Go to slide ${i}`);
+                container.appendChild(dot);
+            }
         }
-      }
 
-      function updateDots() {
-        const container = document.getElementById("slide-dots");
-        const dots = container.querySelectorAll("button");
-        dots.forEach((dot, idx) => {
-          const i = idx + 1;
-          dot.className = `h-2 rounded-full transition-all duration-200 ${i === currentSlide ? "bg-zinc-950 w-5" : "bg-zinc-300 hover:bg-zinc-400 w-2"}`;
-        });
-      }
-
-      function showSlide(n) {
-        if (n < 1) n = 1;
-        if (n > totalSlides) n = totalSlides;
-        currentSlide = n;
-
-        document.querySelectorAll(".slide").forEach((slide) => {
-          slide.classList.remove("active");
-        });
-
-        const active = document.querySelector(
-          `.slide[data-slide="${currentSlide}"]`,
-        );
-        if (active) active.classList.add("active");
-
-        const pad = (num) => String(num).padStart(2, "0");
-        document.getElementById("slide-indicator").textContent =
-          `${pad(currentSlide)} / ${pad(totalSlides)}`;
-
-        updateDots();
-
-        // Lazy initialize charts on slide view
-        if (currentSlide === 3) renderRiceDistChart();
-        if (currentSlide === 5) renderModelComparisonChart();
-        if (currentSlide === 6) renderQuantSizeChart();
-      }
-
-      function nextSlide() {
-        showSlide(currentSlide + 1);
-      }
-      function prevSlide() {
-        showSlide(currentSlide - 1);
-      }
-
-      function toggleFullScreen() {
-        if (!document.fullscreenElement) {
-          document.documentElement.requestFullscreen();
-        } else {
-          if (document.exitFullscreen) {
-            document.exitFullscreen();
-          }
+        function updateDots() {
+            const container = document.getElementById('slide-dots');
+            const dots = container.querySelectorAll('button');
+            dots.forEach((dot, idx) => {
+                const i = idx + 1;
+                dot.className = `h-2 rounded-full transition-all duration-200 ${i === currentSlide ? 'bg-zinc-950 w-5' : 'bg-zinc-300 hover:bg-zinc-400 w-2'}`;
+            });
         }
-      }
 
-      document.addEventListener("keydown", (e) => {
-        if (e.key === "ArrowRight" || e.key === " " || e.key === "PageDown") {
-          nextSlide();
-        } else if (e.key === "ArrowLeft" || e.key === "PageUp") {
-          prevSlide();
-        } else if (e.key.toLowerCase() === "f") {
-          toggleFullScreen();
-        } else if (e.key.toLowerCase() === "p") {
-          window.print();
-        } else if (e.key === "Home") {
-          showSlide(1);
-        } else if (e.key === "End") {
-          showSlide(totalSlides);
+        function updateProgressBar() {
+            const bar = document.getElementById('progress-bar');
+            if (bar) {
+                const pct = (currentSlide / totalSlides) * 100;
+                bar.style.width = `${pct}%`;
+            }
         }
-      });
 
-      // Slide 3: Doughnut Chart
-      function renderRiceDistChart() {
-        if (chartInstances["chartRiceDist"]) return;
-        const ctx = document.getElementById("chartRiceDist");
-        if (!ctx) return;
-        chartInstances["chartRiceDist"] = new Chart(ctx, {
-          type: "doughnut",
-          data: {
-            labels: [
-              "Normal (Utuh)",
-              "Fusarium (Kapur)",
-              "Sprouted (Tunas)",
-              "Moldy (Jamur)",
-              "Pest (Hama)",
-              "Broken (Patah)",
-              "Unripe (Muda)",
-              "Impurities (Kotoran)",
-            ],
-            datasets: [
-              {
-                data: [20450, 1500, 1500, 1500, 1500, 1500, 1500, 1500],
-                backgroundColor: [
-                  "#18181b",
-                  "#3f3f46",
-                  "#71717a",
-                  "#a1a1aa",
-                  "#d4d4d8",
-                  "#e4e4e7",
-                  "#f4f4f5",
-                  "#bbf7d0",
-                ],
-                borderWidth: 1,
-                borderColor: "#ffffff",
-                hoverOffset: 4,
-              },
-            ],
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-              legend: { display: false },
-              tooltip: {
-                callbacks: {
-                  label: function (context) {
-                    const total = 31000;
-                    const val = context.raw;
-                    const pct = ((val / total) * 100).toFixed(1);
-                    return ` ${context.label}: ${val.toLocaleString()} (${pct}%)`;
-                  },
-                },
-              },
-            },
-            cutout: "68%",
-          },
+        function showSlide(n) {
+            if (n < 1) n = 1;
+            if (n > totalSlides) n = totalSlides;
+            currentSlide = n;
+
+            document.querySelectorAll('.slide').forEach(slide => {
+                slide.classList.remove('active');
+            });
+
+            const active = document.querySelector(`.slide[data-slide="${currentSlide}"]`);
+            if (active) {
+                active.classList.add('active');
+                active.scrollTop = 0; // reset scroll to top on slide switch
+            }
+
+            const pad = num => String(num).padStart(2, '0');
+            document.getElementById('slide-indicator').textContent = `${pad(currentSlide)} / ${pad(totalSlides)}`;
+
+            updateDots();
+            updateProgressBar();
+
+            // Lazy initialize charts on slide view
+            if (currentSlide === 3) renderRiceDistChart();
+            if (currentSlide === 5) renderModelComparisonChart();
+            if (currentSlide === 6) renderQuantSizeChart();
+        }
+
+        function nextSlide() { showSlide(currentSlide + 1); }
+        function prevSlide() { showSlide(currentSlide - 1); }
+
+        function toggleFullScreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(() => {});
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen().catch(() => {});
+                }
+            }
+        }
+
+        // Keyboard Navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+                nextSlide();
+            } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+                prevSlide();
+            } else if (e.key.toLowerCase() === 'f') {
+                toggleFullScreen();
+            } else if (e.key.toLowerCase() === 'p') {
+                window.print();
+            } else if (e.key === 'Home') {
+                showSlide(1);
+            } else if (e.key === 'End') {
+                showSlide(totalSlides);
+            }
         });
-      }
 
-      // Slide 5: Model Comparison Bar Chart
-      function renderModelComparisonChart() {
-        if (chartInstances["chartModelComparison"]) return;
-        const ctx = document.getElementById("chartModelComparison");
-        if (!ctx) return;
-        chartInstances["chartModelComparison"] = new Chart(ctx, {
-          type: "bar",
-          data: {
-            labels: [
-              "SE-ResNet50",
-              "MobileNetV4",
-              "EfficientNet-B0",
-              "MobileNetV3",
-              "EdgeNeXt",
-            ],
-            datasets: [
-              {
-                label: "Params (Juta)",
-                data: [26.11, 2.5, 4.02, 4.21, 2.15],
-                backgroundColor: "#18181b",
-                borderRadius: 4,
-                yAxisID: "y",
-              },
-              {
-                label: "Test Accuracy (%)",
-                data: [96.42, 95.23, 95.71, 95.03, 88.0],
-                backgroundColor: "#10b981",
-                borderRadius: 4,
-                yAxisID: "y1",
-              },
-            ],
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-              y: {
-                type: "linear",
-                display: true,
-                position: "left",
-                title: {
-                  display: true,
-                  text: "Params (M)",
-                  font: { size: 9, family: "Geist Mono" },
-                },
-                grid: { color: "#f4f4f5" },
-              },
-              y1: {
-                type: "linear",
-                display: true,
-                position: "right",
-                min: 80,
-                max: 100,
-                title: {
-                  display: true,
-                  text: "Akurasi (%)",
-                  font: { size: 9, family: "Geist Mono" },
-                },
-                grid: { drawOnChartArea: false },
-              },
-              x: {
-                grid: { display: false },
-                ticks: { font: { size: 9, family: "Geist Mono" } },
-              },
-            },
-            plugins: {
-              legend: {
-                position: "top",
-                labels: {
-                  boxWidth: 10,
-                  font: { size: 9, family: "Geist Mono" },
-                },
-              },
-            },
-          },
-        });
-      }
+        // Touch Swipe Gesture Detection for Mobile
+        let touchStartX = 0;
+        let touchStartY = 0;
+        let touchEndX = 0;
+        let touchEndY = 0;
 
-      // Slide 6: Model Size Reduction Chart
-      function renderQuantSizeChart() {
-        if (chartInstances["chartQuantSize"]) return;
-        const ctx = document.getElementById("chartQuantSize");
-        if (!ctx) return;
-        chartInstances["chartQuantSize"] = new Chart(ctx, {
-          type: "bar",
-          data: {
-            labels: [
-              "Baseline FP32",
-              "EffNet-B0 FP32",
-              "MobNetV4 FP32",
-              "MobNetV4 INT8",
-            ],
-            datasets: [
-              {
-                label: "Ukuran Model (MB)",
-                data: [98.4, 16.2, 9.6, 2.6],
-                backgroundColor: ["#ef4444", "#71717a", "#3b82f6", "#10b981"],
-                borderRadius: 4,
-              },
-            ],
-          },
-          options: {
-            indexAxis: "y",
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-              x: {
-                title: {
-                  display: true,
-                  text: "Ukuran File Disk (MB)",
-                  font: { size: 9, family: "Geist Mono" },
-                },
-                grid: { color: "#f4f4f5" },
-              },
-              y: {
-                grid: { display: false },
-                ticks: { font: { size: 9, family: "Geist Mono" } },
-              },
-            },
-            plugins: {
-              legend: { display: false },
-              tooltip: {
-                callbacks: {
-                  label: (c) =>
-                    ` ${c.raw} MB (${c.label === "MobNetV4 INT8" ? "-97.3% dari Baseline" : ""})`,
-                },
-              },
-            },
-          },
-        });
-      }
+        document.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+            touchStartY = e.changedTouches[0].screenY;
+        }, { passive: true });
 
-      window.onload = () => {
-        initDots();
-        showSlide(1);
-      };
+        document.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            touchEndY = e.changedTouches[0].screenY;
+            handleSwipe();
+        }, { passive: true });
+
+        function handleSwipe() {
+            const diffX = touchEndX - touchStartX;
+            const diffY = touchEndY - touchStartY;
+            // Only trigger if horizontal movement is dominant (to prevent blocking vertical card scrolls)
+            if (Math.abs(diffX) > 45 && Math.abs(diffX) > Math.abs(diffY) * 1.5) {
+                if (diffX < 0) {
+                    nextSlide(); // swipe left -> next
+                } else {
+                    prevSlide(); // swipe right -> prev
+                }
+            }
+        }
+
+        // Slide 3: Doughnut Chart
+        function renderRiceDistChart() {
+            if (chartInstances['chartRiceDist']) return;
+            const ctx = document.getElementById('chartRiceDist');
+            if (!ctx) return;
+            chartInstances['chartRiceDist'] = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: [
+                        'Normal (Utuh)', 'Fusarium (Kapur)', 'Sprouted (Tunas)', 
+                        'Moldy (Jamur)', 'Pest (Hama)', 'Broken (Patah)', 
+                        'Unripe (Muda)', 'Impurities (Kotoran)'
+                    ],
+                    datasets: [{
+                        data: [20450, 1500, 1500, 1500, 1500, 1500, 1500, 1500],
+                        backgroundColor: [
+                            '#18181b', '#3f3f46', '#71717a', 
+                            '#a1a1aa', '#d4d4d8', '#e4e4e7', 
+                            '#f4f4f5', '#bbf7d0'
+                        ],
+                        borderWidth: 1,
+                        borderColor: '#ffffff',
+                        hoverOffset: 3
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const total = 31000;
+                                    const val = context.raw;
+                                    const pct = ((val / total) * 100).toFixed(1);
+                                    return ` ${context.label}: ${val.toLocaleString()} (${pct}%)`;
+                                }
+                            }
+                        }
+                    },
+                    cutout: '66%'
+                }
+            });
+        }
+
+        // Slide 5: Model Comparison Bar Chart
+        function renderModelComparisonChart() {
+            if (chartInstances['chartModelComparison']) return;
+            const ctx = document.getElementById('chartModelComparison');
+            if (!ctx) return;
+            chartInstances['chartModelComparison'] = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['SE-ResNet', 'MobNetV4', 'EffNet-B0', 'MobNetV3', 'EdgeNeXt'],
+                    datasets: [
+                        {
+                            label: 'Params (M)',
+                            data: [26.11, 2.50, 4.02, 4.21, 2.15],
+                            backgroundColor: '#18181b',
+                            borderRadius: 4,
+                            yAxisID: 'y'
+                        },
+                        {
+                            label: 'Acc (%)',
+                            data: [96.42, 95.23, 95.71, 95.03, 88.00],
+                            backgroundColor: '#10b981',
+                            borderRadius: 4,
+                            yAxisID: 'y1'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            type: 'linear',
+                            display: true,
+                            position: 'left',
+                            title: { display: true, text: 'Params (M)', font: { size: 9, family: 'Geist Mono' } },
+                            grid: { color: '#f4f4f5' }
+                        },
+                        y1: {
+                            type: 'linear',
+                            display: true,
+                            position: 'right',
+                            min: 80,
+                            max: 100,
+                            title: { display: true, text: 'Acc (%)', font: { size: 9, family: 'Geist Mono' } },
+                            grid: { drawOnChartArea: false }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: { font: { size: 8, family: 'Geist Mono' } }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: { boxWidth: 8, font: { size: 8, family: 'Geist Mono' } }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Slide 6: Model Size Reduction Chart
+        function renderQuantSizeChart() {
+            if (chartInstances['chartQuantSize']) return;
+            const ctx = document.getElementById('chartQuantSize');
+            if (!ctx) return;
+            chartInstances['chartQuantSize'] = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Base FP32', 'EffNet FP32', 'MobV4 FP32', 'MobV4 INT8'],
+                    datasets: [{
+                        label: 'Ukuran Model (MB)',
+                        data: [98.4, 16.2, 9.6, 2.6],
+                        backgroundColor: ['#ef4444', '#71717a', '#3b82f6', '#10b981'],
+                        borderRadius: 4
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            title: { display: true, text: 'Size (MB)', font: { size: 8, family: 'Geist Mono' } },
+                            grid: { color: '#f4f4f5' }
+                        },
+                        y: {
+                            grid: { display: false },
+                            ticks: { font: { size: 8, family: 'Geist Mono' } }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: (c) => ` ${c.raw} MB (${c.label === 'MobV4 INT8' ? '-97.3%' : ''})`
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        window.onload = () => {
+            initDots();
+            showSlide(1);
+        };
     </script>
-  </body>
+</body>
 </html>
